@@ -24,7 +24,7 @@ void fsm_setState(int state)
 	fsm_globalAlarmState = state;
 }
 
-int fsm_getState(state)
+int fsm_getState()
 {
 	return fsm_globalAlarmState;
 }

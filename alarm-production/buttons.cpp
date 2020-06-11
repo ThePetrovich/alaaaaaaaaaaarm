@@ -45,6 +45,7 @@ void buttonOpen_pressed()
 
 void buttonDetector_pressed() 
 {
+	int currentState = fsm_getState();
 	if (currentState == FSM_STATE_ALARMED) {
 		fsm_setState(FSM_STATE_PANIK);
 	}

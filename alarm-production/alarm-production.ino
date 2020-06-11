@@ -2,11 +2,12 @@
 
 void setup() 
 {
-	while (!Serial) { }; // for Leos
 	Serial.begin(9600);
+	buttons_setup();
 }
 
 void loop() 
 {
-	
+	buttons_check();
+	fsm_runStateMachine();
 }

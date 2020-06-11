@@ -1,9 +1,9 @@
 #include <Arduino.h>
 #include <Button.h>
 
-#define FSM_STATE_KALM = 0
-#define FSM_STATE_ALARMED = 1
-#define FSM_STATE_PANIK = 2
+#define FSM_STATE_KALM 0
+#define FSM_STATE_ALARMED 1
+#define FSM_STATE_PANIK 2
 
 #define BUTTON_ENABLE_PIN 13
 #define BUTTON_DISABLE_PIN 12
@@ -16,11 +16,11 @@
 #define MOSFET_SOLENOID_THING 9
 
 void fsm_setState(int state);
-int fsm_getState(state);
+int fsm_getState();
 void fsm_runStateMachine();
 
 void buttons_setup();
-void buttons_setup();
+void buttons_check();
 
 void actions_openDoor(); 
 void actions_closeDoor();
