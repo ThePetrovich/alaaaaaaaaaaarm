@@ -1,12 +1,12 @@
 #include "alarm.h"
 
-Button buttonEnable(13);
-Button buttonDisable(12);
-Button buttonFailsafe(11);
-Button buttonOpen(4);
-Button buttonDetector(3);
+Button buttonEnable(BUTTON_ENABLE_PIN);
+Button buttonDisable(BUTTON_DISABLE_PIN);
+Button buttonFailsafe(BUTTON_FAILSAFE_PIN);
+Button buttonOpen(BUTTON_OPEN_PIN);
+Button buttonDetector(BUTTON_DOOR_PIN);
 
-void button_setup()
+void buttons_setup()
 {
 	buttonEnable.begin();
 	buttonDisable.begin();
@@ -50,7 +50,51 @@ void buttonDetector_pressed()
 	}
 }
 
-void button_check()
+void buttons_check()
 {
-	
+	if (buttonEnable.toggled()) {
+		if (buttonEnable.read() == Button::PRESSED) {
+			Serial.println(F("Debug: ENABLE button pressed"));
+			buttonEnable_pressed();
+		}
+		else {
+			Serial.println(F("Debug: ENABLE button released"));
+		}	
+	}
+	if (buttonDisable.toggled()) {
+		if (buttonDisable.read() == Button::PRESSED) {
+			Serial.println(F("Debug: DISABLE button pressed"));
+			buttonDisable_pressed();
+		}
+		else {
+			Serial.println(F("Debug: DISABLE button released"));
+		}	
+	}
+	if (buttonFailsafe.toggled()) {
+		if (buttonFailsafe.read() == Button::PRESSED) {
+			Serial.println(F("Debug: FAILSAFE button pressed"));
+			buttonFailsafe_pressed();
+		}
+		else {
+			Serial.println(F("Debug: FAILSAFE button released"));
+		}	
+	}
+	if (buttonOpen.toggled()) {
+		if (buttonOpen.read() == Button::PRESSED) {
+			Serial.println(F("Debug: OPEN button pressed"));
+			buttonOpen_pressed();
+		}
+		else {
+			Serial.println(F("Debug: OPEN button released"));
+		}	
+	}
+	if (buttonDetector.toggled()) {
+		if (buttonDetector.read() == Button::PRESSED) {
+			Serial.println(F("Debug: DETECTOR button pressed"));
+		}
+		else {
+			Serial.println(F("Debug: DETECTOR button released"));
+			buttonDetector_pressed(); //This is a limit switch, so it is inverted
+		}	
+	}
 }
