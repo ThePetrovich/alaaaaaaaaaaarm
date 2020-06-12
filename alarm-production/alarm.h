@@ -17,8 +17,8 @@
 #define MOSFET_SOLENOID_THING 9
 
 #define FIRE_ALARM_PIN A0
-#define LED_ALARMED_PIN 8
-#define LED_KALM_PIN 9
+#define LED_ALARMED_PIN 7
+#define LED_KALM_PIN 8
 
 #define RADIO_RX_PIN 2
 #define RADIO_SPEED 1000
