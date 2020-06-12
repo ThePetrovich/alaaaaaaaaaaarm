@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <Button.h>
+#include <VirtualWire.h>
 
 #define FSM_STATE_KALM 0
 #define FSM_STATE_ALARMED 1
@@ -15,12 +16,28 @@
 #define MOSFET_BLINKY_THING 5
 #define MOSFET_SOLENOID_THING 9
 
+#define FIRE_ALARM_PIN A0
+
+#define RADIO_RX_PIN 2
+#define RADIO_SPEED 1000
+#define RADIO_RX_IS_INVERTED 0
+
+#define RADIO_CMD_OPEN "FBIOPNUP"
+#define RADIO_CMD_PANIK "HHAALLPP"
+#define RADIO_CMD_DROP "IDCANMRE"
+
 void fsm_setState(int state);
+void fsm_setPreviousState();
 int fsm_getState();
 void fsm_runStateMachine();
 
 void buttons_setup();
 void buttons_check();
+
+void radio_setup();
+void radio_processCommand();
+
+void actions_setup();
 
 void actions_openDoor(); 
 void actions_closeDoor();
