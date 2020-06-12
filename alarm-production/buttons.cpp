@@ -32,14 +32,14 @@ void buttonDisable_pressed()
 void buttonFailsafe_pressed() 
 {
 	actions_openDoor();
-	delay(20000); //Hate this
+	delay(FAILSAFE_BUTTON_DURATION_MS); //Hate this
 	actions_closeDoor();
 }
 
 void buttonOpen_pressed() 
 {
 	actions_openDoor();
-	delay(5000);
+	delay(OPEN_BUTTON_DURATION_MS);
 	actions_closeDoor();
 }
 

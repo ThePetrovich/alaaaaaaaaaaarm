@@ -27,8 +27,10 @@
 #define RADIO_CMD_OPEN "FBIOPNUP"
 #define RADIO_CMD_PANIK "HHAALLPP"
 #define RADIO_CMD_DROP "IDCANMRE"
-
+ 
 #define PANIK_DURATION_MS 10000
+#define FAILSAFE_BUTTON_DURATION_MS 20000
+#define OPEN_BUTTON_DURATION_MS 5000
 
 void fsm_setState(int state);
 void fsm_setPreviousState();
