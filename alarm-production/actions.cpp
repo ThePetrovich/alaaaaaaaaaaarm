@@ -15,6 +15,8 @@ void actions_setup()
 	pinMode(MOSFET_SOLENOID_THING, OUTPUT);
 	pinMode(MOSFET_LOUD_THING, OUTPUT);
 	pinMode(MOSFET_BLINKY_THING, OUTPUT);
+	pinMode(LED_ALARMED_PIN, OUTPUT);
+	pinMode(LED_KALM_PIN, OUTPUT);
 }
 
 void actions_openDoor()
