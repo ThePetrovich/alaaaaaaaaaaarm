@@ -46,16 +46,12 @@ void actions_calmTFDown()
 int actions_sniff()
 {
 	int result = analogRead(FIRE_ALARM_PIN);
+	Serial.print(F("Debug: sniffing: "));
+	Serial.println(result);
 	if (result >= 512) {
 		if (fsm_getState() == FSM_STATE_ALARMED) {
 			Serial.println(F("Debug: oh noes, fire detected"));
 			fsm_setState(FSM_STATE_PANIK);
-		}
-	}
-	else {
-		if (fsm_getState() == FSM_STATE_PANIK) {
-			Serial.println(F("Debug: fire is gone! (or the smoke detector has burned down idk)"));
-			fsm_setPreviousState();
 		}
 	}
 }

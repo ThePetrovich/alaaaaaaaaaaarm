@@ -89,6 +89,10 @@ void buttons_check()
 			Serial.println(F("Debug: OPEN button released"));
 		}	
 	}
+}
+
+void buttons_checkDetector()
+{
 	if (buttonDetector.toggled()) {
 		if (buttonDetector.read() == Button::PRESSED) {
 			Serial.println(F("Debug: DETECTOR button pressed"));

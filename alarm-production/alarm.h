@@ -33,6 +33,7 @@ void fsm_runStateMachine();
 
 void buttons_setup();
 void buttons_check();
+void buttons_checkDetector();
 
 void radio_setup();
 void radio_processCommand();

@@ -7,6 +7,7 @@ static void fsm_stateAlarmed()
 {
 	Serial.println(F("Debug: current state: ALARMED"));
 	actions_sniff();
+	buttons_checkDetector();
 }
 
 static void fsm_stateKalm()
@@ -17,9 +18,21 @@ static void fsm_stateKalm()
 
 static void fsm_statePanik()
 {
+	static bool dumbFix = false;
+	static unsigned long start = 0;
+	
+	if (!dumbFix) {
+		start = millis();
+		dumbFix = true;
+	}
+	
 	Serial.println(F("Debug: current state: PANIK"));
 	actions_WeeWooWeeWoo();
-	actions_sniff();
+	
+	if (millis() - start >= 10000) { //TODO: change delay
+		dumbFix = false;
+		fsm_setPreviousState();
+	}
 }
 
 void fsm_setState(int state)
