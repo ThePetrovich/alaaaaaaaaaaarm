@@ -17,6 +17,8 @@
 #define MOSFET_SOLENOID_THING 9
 
 #define FIRE_ALARM_PIN A0
+#define LED_ALARMED_PIN 8
+#define LED_KALM_PIN 9
 
 #define RADIO_RX_PIN 2
 #define RADIO_SPEED 1000
@@ -25,6 +27,8 @@
 #define RADIO_CMD_OPEN "FBIOPNUP"
 #define RADIO_CMD_PANIK "HHAALLPP"
 #define RADIO_CMD_DROP "IDCANMRE"
+
+#define PANIK_DURATION_MS 10000
 
 void fsm_setState(int state);
 void fsm_setPreviousState();
@@ -49,3 +53,6 @@ void actions_calmTFDown(); //Disables the loud thingy
 int actions_sniff(); //Checks the smoke detector
 
 void actions_bonk(); //Disables everything
+
+void actions_ledAlarmed();
+void actions_ledKalm();

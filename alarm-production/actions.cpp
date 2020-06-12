@@ -61,3 +61,15 @@ void actions_bonk()
 	actions_calmTFDown();
 	fsm_setState(FSM_STATE_KALM);
 }
+
+void actions_ledAlarmed() 
+{
+	digitalWrite(LED_ALARMED_PIN, HIGH);
+	digitalWrite(LED_KALM_PIN, LOW);
+}
+
+void actions_ledKalm() 
+{
+	digitalWrite(LED_ALARMED_PIN, LOW);
+	digitalWrite(LED_KALM_PIN, HIGH);
+}
