@@ -45,10 +45,15 @@ int actions_sniff()
 	Serial.println(result);
 	if (result <= 512) {
 		if (fsm_getState() == FSM_STATE_ALARMED) {
-			Serial.println(F("Debug: oh noes, fire detected"));
-			fsm_setState(FSM_STATE_PANIK);
+			delay(1000);
+			result = analogRead(FIRE_ALARM_PIN);
+			if (result <= 512) {
+				Serial.println(F("Debug: oh noes, fire detected"));
+				fsm_setState(FSM_STATE_PANIK);
+			}
 		}
 	}
+	return result;
 }
 
 void actions_bonk()
