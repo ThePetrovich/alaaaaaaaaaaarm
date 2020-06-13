@@ -66,7 +66,7 @@ int actions_sniff()
 		}
 	}
 	
-	if (fireChecksCount >= 100) {
+	if (fireChecksCount >= 1000) {
 		if (fireChecksDetected > fireChecksFalse) {
 			if (fsm_getState() == FSM_STATE_ALARMED) {
 				fsm_setState(FSM_STATE_PANIK);
