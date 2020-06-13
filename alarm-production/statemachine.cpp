@@ -4,10 +4,12 @@ int fsm_globalAlarmState = 0;
 int fsm_globalPreviousState = 0;
 
 static void fsm_stateAlarmed()
-{
+{	
+	actions_calmTFDown();
 	actions_ledAlarmed();
 	actions_sniff();
 	buttons_checkDetector();
+	
 	Serial.println(F("Debug: current state: ALARMED"));
 }
 
