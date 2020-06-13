@@ -2,6 +2,11 @@
 
 extern unsigned long int fix_PanikDelay;
 
+static unsigned int fireChecksCount = 0;
+static unsigned int fireChecksDetected = 0;
+static unsigned int fireChecksFalse = 0;
+static bool fireTriggered = false;
+
 void actions_setup()
 {
 	pinMode(MOSFET_SOLENOID_THING, OUTPUT);
@@ -43,16 +48,37 @@ int actions_sniff()
 	int result = analogRead(FIRE_ALARM_PIN);
 	Serial.print(F("Debug: sniffing: "));
 	Serial.println(result);
-	if (result <= 512) {
+	if (result <= 512 && !fireTriggered) {
+		fireTriggered = true;
+	}
+	
+	if (fireTriggered) {
 		if (fsm_getState() == FSM_STATE_ALARMED) {
-			delay(1000);
+			delay(1);
+			fireChecksCount++;
 			result = analogRead(FIRE_ALARM_PIN);
 			if (result <= 512) {
-				Serial.println(F("Debug: oh noes, fire detected"));
-				fsm_setState(FSM_STATE_PANIK);
+				fireChecksDetected++;
+			}
+			else {
+				fireChecksFalse++;
 			}
 		}
 	}
+	
+	if (fireChecksCount >= 100) {
+		if (fireChecksDetected > fireChecksFalse) {
+			if (fsm_getState() == FSM_STATE_ALARMED) {
+				fsm_setState(FSM_STATE_PANIK);
+				Serial.println(F("Debug: oh noes, fire detected"));
+			}
+		}
+		fireTriggered = false;
+		fireChecksCount = 0;
+		fireChecksDetected = 0;
+		fireChecksFalse = 0;
+	}
+	
 	return result;
 }
 
