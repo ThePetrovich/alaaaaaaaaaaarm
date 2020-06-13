@@ -50,7 +50,7 @@ int actions_sniff()
 	int result = analogRead(FIRE_ALARM_PIN);
 	Serial.print(F("Debug: sniffing: "));
 	Serial.println(result);
-	if (result >= 512) {
+	if (result <= 512) {
 		if (fsm_getState() == FSM_STATE_ALARMED) {
 			Serial.println(F("Debug: oh noes, fire detected"));
 			fsm_setState(FSM_STATE_PANIK);
