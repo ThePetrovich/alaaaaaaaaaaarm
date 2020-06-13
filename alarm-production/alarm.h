@@ -59,3 +59,6 @@ void actions_bonk(); //Disables everything
 
 void actions_ledAlarmed();
 void actions_ledKalm();
+
+void actions_blinkAlarm();
+void actions_setAlarmBlinkPeriod(unsigned int period);

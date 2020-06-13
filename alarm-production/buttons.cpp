@@ -19,6 +19,11 @@ void buttonEnable_pressed()
 {
 	int currentState = fsm_getState();
 	
+	for (int i = 0; i < 40; i++) {
+		delay(250);
+		digitalWrite(LED_ALARMED_PIN, !digitalRead(LED_ALARMED_PIN));
+	}
+	
 	if (currentState == FSM_STATE_KALM) {
 		fsm_setState(FSM_STATE_ALARMED);
 	}

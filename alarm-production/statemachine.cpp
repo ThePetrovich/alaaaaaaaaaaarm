@@ -7,9 +7,12 @@ unsigned long int fix_PanikDelay = 0;
 
 static void fsm_stateAlarmed()
 {	
-	actions_calmTFDown();
+	actions_setAlarmBlinkPeriod(2000);
 	actions_ledAlarmed();
 	actions_sniff();
+	
+	actions_blinkAlarm();
+	
 	buttons_checkDetector();
 	
 	Serial.println(F("Debug: current state: ALARMED"));
@@ -26,6 +29,8 @@ static void fsm_statePanik()
 {
 	static bool dumbFix = false;
 	static unsigned long start = 0;
+	
+	actions_setAlarmBlinkPeriod(100);
 	
 	if (fix_PanikDelay != 0) {
 		if (millis() - fix_PanikDelay >= PANIK_START_DELAY_MS) {
