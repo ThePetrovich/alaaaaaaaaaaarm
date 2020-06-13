@@ -24,17 +24,17 @@ void radio_processCommand()
 		}
 		Serial.println("");
 		
-		if (!strcmp(RADIO_CMD_OPEN, buf)) {
+		if (!strcmp(RADIO_CMD_OPEN, (const char*)buf)) {
 			Serial.println(F("Debug: received a valid OPEN command"));
 			actions_openDoor();
 		}
 		
-		if (!strcmp(RADIO_CMD_PANIK, buf)) {
+		if (!strcmp(RADIO_CMD_PANIK, (const char*)buf)) {
 			Serial.println(F("Debug: received a valid PANIK command"));
 			fsm_setState(FSM_STATE_PANIK);
 		}
 		
-		if (!strcmp(RADIO_CMD_DROP, buf)) {
+		if (!strcmp(RADIO_CMD_DROP, (const char*)buf)) {
 			Serial.println(F("Debug: received a valid DROP command"));
 			if (fsm_getState() == FSM_STATE_PANIK) {
 				fsm_setPreviousState();
