@@ -3,6 +3,8 @@
 int fsm_globalAlarmState = 0;
 int fsm_globalPreviousState = 0;
 
+unsigned long int fix_PanikDelay = 0;
+
 static void fsm_stateAlarmed()
 {	
 	actions_calmTFDown();
@@ -24,6 +26,16 @@ static void fsm_statePanik()
 {
 	static bool dumbFix = false;
 	static unsigned long start = 0;
+	
+	if (fix_PanikDelay != 0) {
+		if (millis() - fix_PanikDelay >= PANIK_START_DELAY_MS) {
+			fix_PanikDelay = 0;
+		}
+		else {
+			Serial.println(F("Debug: delaying PANIK"));
+			return;
+		}
+	}
 	
 	if (!dumbFix) {
 		start = millis();

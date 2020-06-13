@@ -1,14 +1,6 @@
 #include "alarm.h"
-/*
-void actions_openDoor(); 
-void actions_closeDoor();
 
-void actions_WeeWooWeeWoo(); //Enables the loud thingy
-void actions_calmTFDown(); //Disables the loud thingy
-
-int actions_sniff(); //Checks the smoke detector
-
-void actions_bonk(); //Disables everything */
+extern unsigned long int fix_PanikDelay;
 
 void actions_setup()
 {
@@ -23,6 +15,7 @@ void actions_openDoor()
 {
 	Serial.println(F("Debug: opening the door"));
 	digitalWrite(MOSFET_SOLENOID_THING, HIGH);
+	fix_PanikDelay = millis();
 }
 
 void actions_closeDoor()
