@@ -57,7 +57,6 @@ int actions_sniff()
 	
 	if (fireTriggered) {
 		if (fsm_getState() == FSM_STATE_ALARMED) {
-			delay(1);
 			fireChecksCount++;
 			result = analogRead(FIRE_ALARM_PIN);
 			if (result <= 512) {
@@ -68,7 +67,7 @@ int actions_sniff()
 			}
 		}
 		
-		if (fireChecksCount >= 200) {
+		if (fireChecksCount >= FIRE_CHECKS_COUNT) {
 			if (fireChecksDetected > fireChecksFalse) {
 				if (fsm_getState() == FSM_STATE_ALARMED) {
 					fsm_setState(FSM_STATE_PANIK);

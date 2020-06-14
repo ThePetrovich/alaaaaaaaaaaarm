@@ -33,6 +33,8 @@
 #define FAILSAFE_BUTTON_DURATION_MS 20000
 #define OPEN_BUTTON_DURATION_MS 5000
 
+#define FIRE_CHECKS_COUNT 10000
+
 void fsm_setState(int state);
 void fsm_setPreviousState();
 int fsm_getState();
