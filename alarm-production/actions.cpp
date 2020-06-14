@@ -29,14 +29,14 @@ void actions_closeDoor()
 
 void actions_WeeWooWeeWoo()
 {
-	Serial.println(F("Debug: enabling the alarm"));
+	//Serial.println(F("Debug: enabling the alarm"));
 	digitalWrite(MOSFET_LOUD_THING, HIGH);
 	actions_blinkAlarm();
 }
 
 void actions_calmTFDown()
 {
-	Serial.println(F("Debug: disabling the alarm"));
+	//Serial.println(F("Debug: disabling the alarm"));
 	digitalWrite(MOSFET_LOUD_THING, LOW);
 	digitalWrite(MOSFET_BLINKY_THING, LOW);
 }
