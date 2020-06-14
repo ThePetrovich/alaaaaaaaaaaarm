@@ -14,15 +14,12 @@ static void fsm_stateAlarmed()
 	actions_blinkAlarm();
 	
 	buttons_checkDetector();
-	
-	Serial.println(F("Debug: current state: ALARMED"));
 }
 
 static void fsm_stateKalm()
 {
 	actions_ledKalm();
 	actions_calmTFDown();
-	Serial.println(F("Debug: current state: KALM"));
 }
 
 static void fsm_statePanik()
@@ -53,7 +50,6 @@ static void fsm_statePanik()
 	}
 	
 	actions_WeeWooWeeWoo();
-	Serial.println(F("Debug: current state: PANIK"));
 }
 
 void fsm_setState(int state)

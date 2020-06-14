@@ -49,8 +49,8 @@ int actions_sniff()
 	static bool fireTriggered = false;
 
 	int result = analogRead(FIRE_ALARM_PIN);
-	Serial.print(F("Debug: sniffing: "));
-	Serial.println(result);
+//	Serial.print(F("Debug: sniffing: "));
+//	Serial.println(result);
 	if (result <= 512 && !fireTriggered) {
 		fireTriggered = true;
 	}
