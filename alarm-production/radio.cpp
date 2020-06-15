@@ -26,7 +26,12 @@ void radio_processCommand()
 		
 		if (!strcmp(RADIO_CMD_OPEN, (const char*)buf)) {
 			Serial.println(F("Debug: received a valid OPEN command"));
-			buttonOpen_pressed();
+			actions_openDoor();
+			for (int i = 0; i < OPEN_BUTTON_DURATION_MS/250; i++) {
+				delay(250);
+				digitalWrite(LED_KALM_PIN, !digitalRead(LED_KALM_PIN));
+			}
+			actions_closeDoor();
 		}
 		
 		if (!strcmp(RADIO_CMD_PANIK, (const char*)buf)) {
