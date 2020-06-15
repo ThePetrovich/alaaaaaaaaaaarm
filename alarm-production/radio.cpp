@@ -41,10 +41,8 @@ void radio_processCommand()
 		
 		if (!strcmp(RADIO_CMD_DROP, (const char*)buf)) {
 			Serial.println(F("Debug: received a valid DROP command"));
-			if (fsm_getState() == FSM_STATE_PANIK) {
-				fsm_setPreviousState();
-				actions_calmTFDown();
-			}
+			fsm_setState(FSM_STATE_ALARMED);
+			actions_calmTFDown();
 		}
 	}
 }
