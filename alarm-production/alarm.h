@@ -2,6 +2,9 @@
 #include <Button.h>
 #include <VirtualWire.h>
 
+#define VERSION "0.1.0"
+#define TIMESTAMP __TIMESTAMP__
+
 #define FSM_STATE_KALM 0
 #define FSM_STATE_ALARMED 1
 #define FSM_STATE_PANIK 2
