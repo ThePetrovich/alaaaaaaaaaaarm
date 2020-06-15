@@ -36,14 +36,20 @@ void buttonDisable_pressed()
 void buttonFailsafe_pressed() 
 {
 	actions_openDoor();
-	delay(FAILSAFE_BUTTON_DURATION_MS); //Hate this
+	for (int i = 0; i < FAILSAFE_BUTTON_DURATION_MS/250; i++) {
+		delay(250);
+		digitalWrite(LED_KALM_PIN, !digitalRead(LED_KALM_PIN));
+	}
 	actions_closeDoor();
 }
 
 void buttonOpen_pressed() 
 {
 	actions_openDoor();
-	delay(OPEN_BUTTON_DURATION_MS);
+	for (int i = 0; i < OPEN_BUTTON_DURATION_MS/250; i++) {
+		delay(250);
+		digitalWrite(LED_KALM_PIN, !digitalRead(LED_KALM_PIN));
+	}
 	actions_closeDoor();
 }
 
