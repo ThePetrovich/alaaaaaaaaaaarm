@@ -26,7 +26,7 @@ void radio_processCommand()
 		
 		if (!strcmp(RADIO_CMD_OPEN, (const char*)buf)) {
 			Serial.println(F("Debug: received a valid OPEN command"));
-			actions_openDoor();
+			buttonOpen_pressed();
 		}
 		
 		if (!strcmp(RADIO_CMD_PANIK, (const char*)buf)) {
@@ -38,6 +38,7 @@ void radio_processCommand()
 			Serial.println(F("Debug: received a valid DROP command"));
 			if (fsm_getState() == FSM_STATE_PANIK) {
 				fsm_setPreviousState();
+				actions_calmTFDown();
 			}
 		}
 	}
