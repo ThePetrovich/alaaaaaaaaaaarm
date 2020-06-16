@@ -8,16 +8,21 @@ void setup()
 	Serial.print(VERSION);
 	Serial.print(F(" built "));
 	Serial.println(TIMESTAMP);
+	
 	buttons_setup();
 	radio_setup();
 	actions_setup();
+	
 	Serial.println(F("Debug: start-up finished"));
 }
 
 void loop() 
 {
-	buttons_check();
-	radio_processCommand();
-	
 	fsm_runStateMachine();
+	buttons_checkFailsafe();
+	buttons_checkOpen();
+	
+	if (radio_checkOpen()) {
+		buttonOpen_pressed();
+	}
 }

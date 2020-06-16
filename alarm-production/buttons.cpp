@@ -1,4 +1,5 @@
 #include "alarm.h"
+#include <Button.h>
 
 Button buttonEnable(BUTTON_ENABLE_PIN);
 Button buttonDisable(BUTTON_DISABLE_PIN);
@@ -13,24 +14,6 @@ void buttons_setup()
 	buttonFailsafe.begin();
 	buttonOpen.begin();
 	buttonDetector.begin();
-}
-
-void buttonEnable_pressed() 
-{
-	int currentState = fsm_getState();
-	
-	if (currentState == FSM_STATE_KALM) {
-		for (int i = 0; i < 40; i++) {
-			delay(250);
-			digitalWrite(LED_ALARMED_PIN, !digitalRead(LED_ALARMED_PIN));
-		}
-		fsm_setState(FSM_STATE_ALARMED);
-	}
-}
-
-void buttonDisable_pressed() 
-{	
-	fsm_setState(FSM_STATE_KALM);
 }
 
 void buttonFailsafe_pressed() 
@@ -53,63 +36,79 @@ void buttonOpen_pressed()
 	actions_closeDoor();
 }
 
-void buttonDetector_pressed() 
-{
-	int currentState = fsm_getState();
-	if (currentState == FSM_STATE_ALARMED) {
-		fsm_setState(FSM_STATE_PANIK);
-	}
-}
-
-void buttons_check()
-{
-	if (buttonEnable.toggled()) {
-		if (buttonEnable.read() == Button::PRESSED) {
-			Serial.println(F("Debug: ENABLE button pressed"));
-			buttonEnable_pressed();
-		}
-		else {
-			Serial.println(F("Debug: ENABLE button released"));
-		}	
-	}
-	if (buttonDisable.toggled()) {
-		if (buttonDisable.read() == Button::PRESSED) {
-			Serial.println(F("Debug: DISABLE button pressed"));
-			buttonDisable_pressed();
-		}
-		else {
-			Serial.println(F("Debug: DISABLE button released"));
-		}	
-	}
-	if (buttonFailsafe.toggled()) {
-		if (buttonFailsafe.read() == Button::PRESSED) {
-			Serial.println(F("Debug: FAILSAFE button pressed"));
-			buttonFailsafe_pressed();
-		}
-		else {
-			Serial.println(F("Debug: FAILSAFE button released"));
-		}	
-	}
-	if (buttonOpen.toggled()) {
-		if (buttonOpen.read() == Button::PRESSED) {
-			Serial.println(F("Debug: OPEN button pressed"));
-			buttonOpen_pressed();
-		}
-		else {
-			Serial.println(F("Debug: OPEN button released"));
-		}	
-	}
-}
-
-void buttons_checkDetector()
+int buttons_checkDetector()
 {
 	if (buttonDetector.toggled()) {
 		if (buttonDetector.read() == Button::PRESSED) {
 			Serial.println(F("Debug: DETECTOR button pressed"));
+			return 1;
 		}
 		else {
 			Serial.println(F("Debug: DETECTOR button released"));
-			buttonDetector_pressed(); //This is a limit switch, so it is inverted
+			return -1;
 		}	
 	}
+	return 0;
+}
+
+int buttons_checkEnable()
+{
+	if (buttonEnable.toggled()) {
+		if (buttonEnable.read() == Button::PRESSED) {
+			Serial.println(F("Debug: ENABLE button pressed"));
+			return 1;
+		}
+		else {
+			Serial.println(F("Debug: ENABLE button released"));
+			return -1;
+		}	
+	}
+	return 0;
+}
+
+int buttons_checkDisable()
+{
+	if (buttonDisable.toggled()) {
+		if (buttonDisable.read() == Button::PRESSED) {
+			Serial.println(F("Debug: DISABLE button pressed"));
+			return 1;
+		}
+		else {
+			Serial.println(F("Debug: DISABLE button released"));
+			return -1;
+		}	
+	}
+	return 0;
+}
+
+int buttons_checkFailsafe()
+{
+	if (buttonFailsafe.toggled()) {
+		if (buttonFailsafe.read() == Button::PRESSED) {
+			Serial.println(F("Debug: FAILSAFE button pressed"));
+			buttonFailsafe_pressed();
+			return 1;
+		}
+		else {
+			Serial.println(F("Debug: FAILSAFE button released"));
+			return -1;
+		}	
+	}
+	return 0;
+}
+
+int buttons_checkOpen()
+{
+	if (buttonOpen.toggled()) {
+		if (buttonOpen.read() == Button::PRESSED) {
+			Serial.println(F("Debug: OPEN button pressed"));
+			buttonOpen_pressed();
+			return 1;
+		}
+		else {
+			Serial.println(F("Debug: OPEN button released"));
+			return -1;
+		}	
+	}
+	return 0;
 }

@@ -1,7 +1,7 @@
 #include "alarm.h"
 
-int fsm_globalAlarmState = 0;
-int fsm_globalPreviousState = 0;
+int fsm_globalAlarmState = FSM_STATE_KALM;
+int fsm_globalPreviousState = FSM_STATE_KALM;
 
 unsigned long int fix_PanikDelay = 0;
 
@@ -13,13 +13,41 @@ static void fsm_stateAlarmed()
 	
 	actions_blinkAlarm();
 	
-	buttons_checkDetector();
+	if (buttons_checkDetector() == -1) {
+		fix_PanikDelay = millis();
+		fsm_globalPreviousState = fsm_globalAlarmState;
+		fsm_setState(FSM_STATE_PANIK);
+	}
+	
+	if (buttons_checkDisable() == 1) {
+		fsm_setState(FSM_STATE_KALM);
+	}
+	
+	if (radio_checkPanik()) {
+		fix_PanikDelay = 0;
+		fsm_globalPreviousState = fsm_globalAlarmState;
+		fsm_setState(FSM_STATE_PANIK);
+	}
 }
 
 static void fsm_stateKalm()
 {
 	actions_ledKalm();
 	actions_calmTFDown();
+	
+	if (buttons_checkEnable() == 1) {
+		for (int i = 0; i < 20; i++) {
+			delay(250);
+			digitalWrite(LED_ALARMED_PIN, !digitalRead(LED_ALARMED_PIN));
+		}
+		fsm_setState(FSM_STATE_ALARMED);
+	}
+	
+	if (radio_checkPanik()) {
+		fix_PanikDelay = 0;
+		fsm_globalPreviousState = fsm_globalAlarmState;
+		fsm_setState(FSM_STATE_PANIK);
+	}
 }
 
 static void fsm_statePanik()
@@ -27,14 +55,21 @@ static void fsm_statePanik()
 	static bool dumbFix = false;
 	static unsigned long start = 0;
 	
-	actions_setAlarmBlinkPeriod(100);
-	
 	if (fix_PanikDelay != 0) {
 		if (millis() - fix_PanikDelay >= PANIK_START_DELAY_MS) {
 			fix_PanikDelay = 0;
 		}
 		else {
-			Serial.println(F("Debug: delaying PANIK"));
+			if (radio_checkDrop()) {
+				fsm_setState(fsm_globalPreviousState);
+				actions_calmTFDown();
+			}
+	
+			if (buttons_checkDisable() == 1) {
+				fsm_setState(FSM_STATE_KALM);
+			}
+			
+			actions_blinkAlarm();
 			return;
 		}
 	}
@@ -46,21 +81,26 @@ static void fsm_statePanik()
 	
 	if (millis() - start >= PANIK_DURATION_MS) { //TODO: change delay
 		dumbFix = false;
-		fsm_setPreviousState();
+		fsm_setState(fsm_globalPreviousState);
 	}
 	
+	if (radio_checkDrop()) {
+		fsm_setState(fsm_globalPreviousState);
+		actions_calmTFDown();
+	}
+	
+	if (buttons_checkDisable() == 1) {
+		fsm_setState(FSM_STATE_KALM);
+	}
+	actions_setAlarmBlinkPeriod(100);
+	
+	actions_blinkAlarm();
 	actions_WeeWooWeeWoo();
 }
 
 void fsm_setState(int state)
 {
-	fsm_globalPreviousState = fsm_globalAlarmState;
 	fsm_globalAlarmState = state;
-}
-
-void fsm_setPreviousState()
-{
-	fsm_globalAlarmState = fsm_globalPreviousState;
 }
 
 int fsm_getState()

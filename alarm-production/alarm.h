@@ -1,8 +1,6 @@
 #include <Arduino.h>
-#include <Button.h>
-#include <VirtualWire.h>
 
-#define VERSION "0.1.1"
+#define VERSION "0.2.0"
 #define TIMESTAMP __TIMESTAMP__
 
 #define FSM_STATE_KALM 0
@@ -39,16 +37,22 @@
 #define FIRE_CHECKS_COUNT 10000
 
 void fsm_setState(int state);
-void fsm_setPreviousState();
 int fsm_getState();
 void fsm_runStateMachine();
 
 void buttons_setup();
-void buttons_check();
-void buttons_checkDetector();
+int buttons_checkDetector();
+int buttons_checkEnable();
+int buttons_checkDisable();
+int buttons_checkFailsafe();
+int buttons_checkOpen();
+
+void buttonOpen_pressed();
 
 void radio_setup();
-void radio_processCommand();
+int radio_checkOpen();
+int radio_checkPanik();
+int radio_checkDrop();
 
 void actions_setup();
 
