@@ -10,6 +10,8 @@ static void fsm_stateAlarmed()
 	actions_setAlarmBlinkPeriod(2000);
 	actions_ledAlarmed();
 	actions_sniff();
+
+  actions_calmTFDown();
 	
 	actions_blinkAlarm();
 	
@@ -23,10 +25,11 @@ static void fsm_stateAlarmed()
 		fsm_setState(FSM_STATE_KALM);
 	}
 	
-	if (radio_checkPanik()) {
+	if (radio_getLastCommand() == 2) {
 		fix_PanikDelay = 0;
 		fsm_globalPreviousState = fsm_globalAlarmState;
 		fsm_setState(FSM_STATE_PANIK);
+    radio_dropLastCommand();
 	}
 }
 
@@ -43,10 +46,11 @@ static void fsm_stateKalm()
 		fsm_setState(FSM_STATE_ALARMED);
 	}
 	
-	if (radio_checkPanik()) {
+	if (radio_getLastCommand() == 2) {
 		fix_PanikDelay = 0;
 		fsm_globalPreviousState = fsm_globalAlarmState;
 		fsm_setState(FSM_STATE_PANIK);
+    radio_dropLastCommand();
 	}
 }
 
@@ -60,9 +64,10 @@ static void fsm_statePanik()
 			fix_PanikDelay = 0;
 		}
 		else {
-			if (radio_checkDrop()) {
+			if (radio_getLastCommand() == 3) {
 				fsm_setState(fsm_globalPreviousState);
 				actions_calmTFDown();
+        radio_dropLastCommand();
 			}
 	
 			if (buttons_checkDisable() == 1) {
@@ -84,9 +89,10 @@ static void fsm_statePanik()
 		fsm_setState(fsm_globalPreviousState);
 	}
 	
-	if (radio_checkDrop()) {
+	if (radio_getLastCommand() == 3) {
 		fsm_setState(fsm_globalPreviousState);
 		actions_calmTFDown();
+    radio_dropLastCommand();
 	}
 	
 	if (buttons_checkDisable() == 1) {

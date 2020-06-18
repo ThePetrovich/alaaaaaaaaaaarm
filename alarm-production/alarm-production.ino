@@ -18,11 +18,14 @@ void setup()
 
 void loop() 
 {
+  radio_processCommand();
+  
 	fsm_runStateMachine();
 	buttons_checkFailsafe();
 	buttons_checkOpen();
-	
-	if (radio_checkOpen()) {
-		buttonOpen_pressed();
-	}
+
+  if (radio_getLastCommand() == 1) {
+    buttonOpen_pressed();
+    radio_dropLastCommand();
+  }
 }

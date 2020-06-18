@@ -1,6 +1,7 @@
 #include "alarm.h"
 #include <VirtualWire.h>
 
+int commandNum = 0;
 static uint8_t buf[VW_MAX_MESSAGE_LEN];
 static uint8_t buflen = VW_MAX_MESSAGE_LEN;
 
@@ -66,4 +67,42 @@ int radio_checkDrop()
 		}
 	}
 	return 0;
+}
+
+int radio_getLastCommand()
+{
+  return commandNum;
+}
+
+void radio_dropLastCommand()
+{
+  commandNum = 0;
+}
+
+int radio_processCommand()
+{
+    if (vw_get_message(buf, &buflen)) {
+    Serial.print(F("Debug: got: "));
+    
+    for (int i = 0; i < buflen; i++) {
+      Serial.print(buf[i]);
+    }
+    Serial.println("");
+    
+    if (!strcmp(RADIO_CMD_OPEN, (const char*)buf)) {
+      Serial.println(F("Debug: received a valid OPEN command"));
+      commandNum = 1;
+    }
+    
+    if (!strcmp(RADIO_CMD_PANIK, (const char*)buf)) {
+      Serial.println(F("Debug: received a valid PANIK command"));
+      commandNum = 2;
+    }
+    
+    if (!strcmp(RADIO_CMD_DROP, (const char*)buf)) {
+      Serial.println(F("Debug: received a valid DROP command"));
+      commandNum = 3;
+    }
+  }
+  return 0;
 }

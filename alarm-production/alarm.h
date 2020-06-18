@@ -54,6 +54,10 @@ int radio_checkOpen();
 int radio_checkPanik();
 int radio_checkDrop();
 
+int radio_processCommand();
+int radio_getLastCommand();
+void radio_dropLastCommand();
+
 void actions_setup();
 
 void actions_openDoor(); 

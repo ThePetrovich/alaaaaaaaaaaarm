@@ -38,7 +38,6 @@ void actions_calmTFDown()
 {
 	//Serial.println(F("Debug: disabling the alarm"));
 	digitalWrite(MOSFET_LOUD_THING, LOW);
-	digitalWrite(MOSFET_BLINKY_THING, LOW);
 }
 
 int actions_sniff()
