@@ -9,10 +9,14 @@ static void fsm_stateAlarmed()
 {	
 	actions_setAlarmBlinkPeriod(2000);
 	actions_ledAlarmed();
-	actions_sniff();
 	
 	actions_blinkAlarm();
 	
+    if (actions_sniff()) {
+        fsm_globalPreviousState = fsm_globalAlarmState;
+		fsm_setState(FSM_STATE_PANIK);
+    }
+    
 	if (buttons_checkDetector() == -1) {
 		fix_PanikDelay = millis();
 		fsm_globalPreviousState = fsm_globalAlarmState;
@@ -34,6 +38,7 @@ static void fsm_stateKalm()
 {
 	actions_ledKalm();
 	actions_calmTFDown();
+    digitalWrite(MOSFET_BLINKY_THING, LOW); //Doing this explicitly because this sick fuck can't do this
 	
 	if (buttons_checkEnable() == 1) {
 		for (int i = 0; i < 20; i++) {

@@ -43,6 +43,7 @@ void actions_calmTFDown()
 
 int actions_sniff()
 {
+    int returnCode = 0;
 	static unsigned int fireChecksCount = 0;
 	static unsigned int fireChecksDetected = 0;
 	static unsigned int fireChecksFalse = 0;
@@ -69,10 +70,8 @@ int actions_sniff()
 		
 		if (fireChecksCount >= FIRE_CHECKS_COUNT) {
 			if (fireChecksDetected > fireChecksFalse) {
-				if (fsm_getState() == FSM_STATE_ALARMED) {
-					fsm_setState(FSM_STATE_PANIK);
-					Serial.println(F("Debug: oh noes, fire detected"));
-				}
+				returnCode = 1;
+				Serial.println(F("Debug: oh noes, fire detected"));
 			}
 			fireTriggered = false;
 			fireChecksCount = 0;
@@ -81,8 +80,7 @@ int actions_sniff()
 		}
 	}
 	
-	
-	return result;
+	return returnCode;
 }
 
 void actions_bonk()
