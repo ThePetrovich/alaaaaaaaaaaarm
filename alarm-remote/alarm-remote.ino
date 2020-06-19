@@ -39,16 +39,24 @@ void loop()
         Serial.println("Debug: PANIK long press");
 		
 		digitalWrite(13, true);
-		vw_send((uint8_t *)msgPanik, strlen(msgPanik));
-		vw_wait_tx();
+        
+        for (int i = 0; i < 10; i++) {
+            vw_send((uint8_t *)msgPanik, strlen(msgPanik));
+            vw_wait_tx();
+        }
+		
 		digitalWrite(13, false);
     } 
 	else if (panik.checkPress() == 1)	{
         Serial.println("Debug: PANIK short press");
 		
 		digitalWrite(13, true);
-		vw_send((uint8_t *)msgDrop, strlen(msgDrop));
-		vw_wait_tx();
+        
+        for (int i = 0; i < 10; i++) {
+            vw_send((uint8_t *)msgDrop, strlen(msgDrop));
+            vw_wait_tx();
+        }
+        
 		digitalWrite(13, false);
     }
 	
@@ -56,8 +64,12 @@ void loop()
         Serial.println("Debug: OPEN short press");
 		
 		digitalWrite(13, true);
-		vw_send((uint8_t *)msgOpen, strlen(msgOpen));
-		vw_wait_tx();
+        
+        for (int i = 0; i < 10; i++) {
+            vw_send((uint8_t *)msgOpen, strlen(msgOpen));
+            vw_wait_tx();
+        }
+        
 		digitalWrite(13, false);
     } 
 }
