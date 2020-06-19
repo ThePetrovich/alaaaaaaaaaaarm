@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#define VERSION "0.3.0"
+#define VERSION "0.3.1"
 #define TIMESTAMP __TIMESTAMP__
 
 #define FSM_STATE_KALM 0

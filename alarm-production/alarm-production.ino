@@ -21,6 +21,7 @@ void loop()
     radio_processCommand();
     
     if (radio_getLastCommand() == 1) {
+        buttonOpen_pressed();
         radio_dropLastCommand();
     }
   
