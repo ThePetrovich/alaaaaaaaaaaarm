@@ -9,6 +9,7 @@ static void fsm_stateAlarmed()
 {	
 	actions_setAlarmBlinkPeriod(2000);
 	actions_ledAlarmed();
+    digitalWrite(MOSFET_LOUD_THING, LOW);
 	
 	actions_blinkAlarm();
 	
