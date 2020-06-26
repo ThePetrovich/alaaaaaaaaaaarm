@@ -9,9 +9,9 @@ void setup()
 	Serial.print(F(" built "));
 	Serial.println(TIMESTAMP);
 	
-	buttons_setup();
 	radio_setup();
 	actions_setup();
+    buttons_setup();
 	
 	Serial.println(F("Debug: start-up finished"));
 }
@@ -19,8 +19,11 @@ void setup()
 void loop() 
 {
     buttons_checkFailsafe();
-	buttons_checkOpen();
     radio_processCommand();
+    
+    if (digitalRead(BUTTON_OPEN_PIN)) {
+        buttonOpen_pressed();
+    }
     
     if (radio_getLastCommand() == 1) {
         buttonOpen_pressed();
