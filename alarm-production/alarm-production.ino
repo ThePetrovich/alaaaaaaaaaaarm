@@ -18,6 +18,8 @@ void setup()
 
 void loop() 
 {
+    buttons_checkFailsafe();
+	buttons_checkOpen();
     radio_processCommand();
     
     if (radio_getLastCommand() == 1) {
@@ -26,6 +28,4 @@ void loop()
     }
   
 	fsm_runStateMachine();
-	buttons_checkFailsafe();
-	buttons_checkOpen();
 }
