@@ -11,30 +11,7 @@ void buttons_setup()
 {
 	buttonEnable.begin();
 	buttonDisable.begin();
-	//buttonFailsafe.begin();
-	//buttonOpen.begin();
 	buttonDetector.begin();
-}
-
-void buttonFailsafe_pressed() 
-{
-	actions_openDoor();
-	for (int i = 0; i < FAILSAFE_BUTTON_DURATION_MS/250; i++) {
-		delay(250);
-		digitalWrite(LED_KALM_PIN, !digitalRead(LED_KALM_PIN));
-	}
-	actions_closeDoor();
-}
-
-
-void buttonOpen_pressed() 
-{
-	actions_openDoor();
-	for (int i = 0; i < OPEN_BUTTON_DURATION_MS/250; i++) {
-		delay(250);
-		digitalWrite(LED_KALM_PIN, !digitalRead(LED_KALM_PIN));
-	}
-	actions_closeDoor();
 }
 
 int buttons_checkDetector()
@@ -81,36 +58,3 @@ int buttons_checkDisable()
 	}
 	return 0;
 }
-
-/*
-int buttons_checkFailsafe()
-{
-	if (buttonFailsafe.toggled()) {
-		if (buttonFailsafe.read() == Button::PRESSED) {
-			Serial.println(F("Debug: FAILSAFE button pressed"));
-			buttonFailsafe_pressed();
-			return 1;
-		}
-		else {
-			Serial.println(F("Debug: FAILSAFE button released"));
-			return -1;
-		}	
-	}
-	return 0;
-}
-
-int buttons_checkOpen()
-{
-	if (buttonOpen.toggled()) {
-		if (buttonOpen.read() == Button::PRESSED) {
-			Serial.println(F("Debug: OPEN button pressed"));
-			buttonOpen_pressed();
-			return 1;
-		}
-		else {
-			Serial.println(F("Debug: OPEN button released"));
-			return -1;
-		}	
-	}
-	return 0;
-}*/

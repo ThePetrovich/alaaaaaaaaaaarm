@@ -14,19 +14,6 @@ void actions_setup()
 	pinMode(LED_KALM_PIN, OUTPUT);
 }
 
-void actions_openDoor()
-{
-	Serial.println(F("Debug: opening the door"));
-	digitalWrite(DOOR_OPEN_PIN, HIGH);
-	fix_PanikDelay = millis();
-}
-
-void actions_closeDoor()
-{
-	Serial.println(F("Debug: Closing the door"));
-	digitalWrite(DOOR_OPEN_PIN, LOW);
-}
-
 void actions_WeeWooWeeWoo()
 {
 	//Serial.println(F("Debug: enabling the alarm"));

@@ -27,12 +27,6 @@ static void fsm_stateAlarmed()
 	if (buttons_checkDisable() == 1) {
 		fsm_setState(FSM_STATE_KALM);
 	}
-	
-	if (radio_checkPanik()) {
-		fix_PanikDelay = 0;
-		fsm_globalPreviousState = fsm_globalAlarmState;
-		fsm_setState(FSM_STATE_PANIK);
-	}
 }
 
 static void fsm_stateKalm()
@@ -48,12 +42,6 @@ static void fsm_stateKalm()
 		}
 		fsm_setState(FSM_STATE_ALARMED);
 	}
-	
-	if (radio_checkPanik()) {
-		fix_PanikDelay = 0;
-		fsm_globalPreviousState = fsm_globalAlarmState;
-		fsm_setState(FSM_STATE_PANIK);
-	}
 }
 
 static void fsm_statePanik()
@@ -66,11 +54,6 @@ static void fsm_statePanik()
 			fix_PanikDelay = 0;
 		}
 		else {
-			if (radio_checkDrop()) {
-				fsm_setState(fsm_globalPreviousState);
-				actions_calmTFDown();
-			}
-	
 			if (buttons_checkDisable() == 1) {
 				fsm_setState(FSM_STATE_KALM);
 			}
@@ -88,11 +71,6 @@ static void fsm_statePanik()
 	if (millis() - start >= PANIK_DURATION_MS) { //TODO: change delay
 		dumbFix = false;
 		fsm_setState(fsm_globalPreviousState);
-	}
-	
-	if (radio_checkDrop()) {
-		fsm_setState(fsm_globalPreviousState);
-		actions_calmTFDown();
 	}
 	
 	if (buttons_checkDisable() == 1) {

@@ -28,14 +28,6 @@
 #define LED_ALARMED_PIN 7
 #define LED_KALM_PIN 8
 
-#define RADIO_RX_PIN 11
-#define RADIO_SPEED 1000
-#define RADIO_RX_IS_INVERTED 0
-
-#define RADIO_CMD_OPEN "FBIOPNUP"
-#define RADIO_CMD_PANIK "HHAALLPP"
-#define RADIO_CMD_DROP "IDCANMRE"
-
 #define PANIK_START_DELAY_MS 10000
 #define PANIK_DURATION_MS 10000
 #define FAILSAFE_BUTTON_DURATION_MS 20000
@@ -51,24 +43,8 @@ void buttons_setup();
 int buttons_checkDetector();
 int buttons_checkEnable();
 int buttons_checkDisable();
-int buttons_checkFailsafe();
-int buttons_checkOpen();
-
-void buttonOpen_pressed();
-
-void radio_setup();
-int radio_checkOpen();
-int radio_checkPanik();
-int radio_checkDrop();
-
-int radio_processCommand();
-int radio_getLastCommand();
-void radio_dropLastCommand();
 
 void actions_setup();
-
-void actions_openDoor(); 
-void actions_closeDoor();
 
 void actions_WeeWooWeeWoo(); //Enables the loud thingy
 void actions_calmTFDown(); //Disables the loud thingy
@@ -83,7 +59,8 @@ void actions_ledKalm();
 void actions_blinkAlarm();
 void actions_setAlarmBlinkPeriod(unsigned int period);
 
-void wiegand_processCommand();
 void wiegand_setup();
+
+void wiegand_processCommand();
 
 #endif

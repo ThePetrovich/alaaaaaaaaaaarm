@@ -10,7 +10,6 @@ void setup()
 	Serial.print(F(" built "));
 	Serial.println(TIMESTAMP);
 	
-	radio_setup();
 	actions_setup();
     buttons_setup();
     wiegand_setup();
@@ -20,20 +19,7 @@ void setup()
 
 void loop() 
 {
-    //buttons_checkFailsafe();
-    //radio_processCommand();
-
     wiegand_processCommand();
-    
-    /*
-    if (digitalRead(BUTTON_OPEN_PIN)) {
-        buttonOpen_pressed();
-    }
-    
-    if (radio_getLastCommand() == 1) {
-        buttonOpen_pressed();
-        radio_dropLastCommand();
-    }*/
   
 	fsm_runStateMachine();
 }
