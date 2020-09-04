@@ -22,7 +22,7 @@
 #define WIEGAND_DATA1_PIN 2
 #define WIEGAND_DATA2_PIN 3
 
-#define DOOR_OPEN_PIN 6
+#define DOOR_OPEN_PIN 4
 
 #define FIRE_ALARM_PIN A0
 #define LED_ALARMED_PIN 7

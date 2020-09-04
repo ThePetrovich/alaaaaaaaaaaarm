@@ -1,9 +1,11 @@
 #include "alarm.h"
 #include <Wiegand.h>
+#include <String.h>
 
 extern WIEGAND wg;
 
 uint32_t wg_authorized_keys[] = {0x69EE84}; //Debug key
+char wg_names[16][] = {"Debug"}
 const uint8_t wg_authorized_keys_num = 1;
 
 void wiegand_setup() 
@@ -14,7 +16,7 @@ void wiegand_setup()
 void wiegand_processCommand() 
 {
     uint32_t code = wg.getCode();
-    uint8_t result = 0;
+    int result = 0;
     if(wg.available())
 	{
 		Serial.print("Wiegand HEX = ");
@@ -26,13 +28,15 @@ void wiegand_processCommand()
 
         for (int i = 0; i < wg_authorized_keys_num; i++) {
             if (code == wg_authorized_keys[i]) {
-                result = 1;
+                result = i;
                 break;
             }
         }
 
         if (result) {
-            Serial.println("Found keycard code in authorized keycards list");
+            Serial.println("Found keycard code in authorized keycards list");]
+            Serial.print("Username = ");
+            Serial.println(wg_names[result]);
             actions_openDoor();
             delay(500);
             actions_closeDoor();
