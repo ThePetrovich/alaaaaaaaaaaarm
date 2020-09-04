@@ -16,7 +16,7 @@ void wiegand_setup()
 void wiegand_processCommand() 
 {
     uint32_t code = wg.getCode();
-    int result = 0;
+    int result = 0, index = 0;
     if(wg.available())
 	{
 		Serial.print("Wiegand HEX = ");
@@ -28,7 +28,8 @@ void wiegand_processCommand()
 
         for (int i = 0; i < wg_authorized_keys_num; i++) {
             if (code == wg_authorized_keys[i]) {
-                result = i;
+                result = 1;
+                index = i;
                 break;
             }
         }
@@ -36,12 +37,10 @@ void wiegand_processCommand()
         if (result) {
             Serial.println("Found keycard code in authorized keycards list");
             Serial.print("Username = ");
-            Serial.println(wg_names[result]);
+            Serial.println(wg_names[index]);
             pinMode(DOOR_OPEN_PIN, INPUT);
-            digitalWrite(DOOR_OPEN_PIN, LOW);
             delay(500);
             pinMode(DOOR_OPEN_PIN, OUTPUT);
-            digitalWrite(DOOR_OPEN_PIN, HIGH);
         }
         else {
             Serial.println("Unauthorized keycard");
