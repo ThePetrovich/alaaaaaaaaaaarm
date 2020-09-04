@@ -5,7 +5,7 @@
 extern WIEGAND wg;
 
 uint32_t wg_authorized_keys[] = {0x69EE84}; //Debug key
-char wg_names[16][] = {"Debug"}
+char wg_names[][16] = {"Debug"};
 const uint8_t wg_authorized_keys_num = 1;
 
 void wiegand_setup() 
@@ -34,7 +34,7 @@ void wiegand_processCommand()
         }
 
         if (result) {
-            Serial.println("Found keycard code in authorized keycards list");]
+            Serial.println("Found keycard code in authorized keycards list");
             Serial.print("Username = ");
             Serial.println(wg_names[result]);
             pinMode(DOOR_OPEN_PIN, INPUT);
