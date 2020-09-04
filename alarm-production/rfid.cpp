@@ -15,10 +15,11 @@ void wiegand_setup()
 
 void wiegand_processCommand() 
 {
-    uint32_t code = wg.getCode();
+    uint32_t code = 0;
     int result = 0, index = 0;
     if(wg.available())
 	{
+        code = wg.getCode();
 		Serial.print("Wiegand HEX = ");
 		Serial.print(code, HEX);
 		Serial.print(", DECIMAL = ");
