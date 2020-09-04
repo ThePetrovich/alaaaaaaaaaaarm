@@ -38,12 +38,14 @@ void wiegand_processCommand()
             Serial.println("Found keycard code in authorized keycards list");
             Serial.print("Username = ");
             Serial.println(wg_names[index]);
-            pinMode(DOOR_OPEN_PIN, INPUT);
-            delay(500);
             pinMode(DOOR_OPEN_PIN, OUTPUT);
+            digitalWrite(DOOR_OPEN_PIN, HIGH);
+            delay(500);
         }
         else {
             Serial.println("Unauthorized keycard");
         }
 	}
+    pinMode(DOOR_OPEN_PIN, INPUT);
+    digitalWrite(DOOR_OPEN_PIN, LOW);
 }
