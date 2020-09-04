@@ -3,16 +3,16 @@
 
 Button buttonEnable(BUTTON_ENABLE_PIN);
 Button buttonDisable(BUTTON_DISABLE_PIN);
-Button buttonFailsafe(BUTTON_FAILSAFE_PIN);
-Button buttonOpen(BUTTON_OPEN_PIN);
+//Button buttonFailsafe(BUTTON_FAILSAFE_PIN);
+//Button buttonOpen(BUTTON_OPEN_PIN);
 Button buttonDetector(BUTTON_DOOR_PIN);
 
 void buttons_setup()
 {
 	buttonEnable.begin();
 	buttonDisable.begin();
-	buttonFailsafe.begin();
-	buttonOpen.begin();
+	//buttonFailsafe.begin();
+	//buttonOpen.begin();
 	buttonDetector.begin();
 }
 
@@ -25,6 +25,7 @@ void buttonFailsafe_pressed()
 	}
 	actions_closeDoor();
 }
+
 
 void buttonOpen_pressed() 
 {
@@ -81,6 +82,7 @@ int buttons_checkDisable()
 	return 0;
 }
 
+/*
 int buttons_checkFailsafe()
 {
 	if (buttonFailsafe.toggled()) {
@@ -111,4 +113,4 @@ int buttons_checkOpen()
 		}	
 	}
 	return 0;
-}
+}*/

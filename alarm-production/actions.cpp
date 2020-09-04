@@ -7,7 +7,7 @@ static bool act_alarmLedState = false;
 
 void actions_setup()
 {
-	pinMode(MOSFET_SOLENOID_THING, OUTPUT);
+	pinMode(DOOR_OPEN_PIN, OUTPUT);
 	pinMode(MOSFET_LOUD_THING, OUTPUT);
 	pinMode(MOSFET_BLINKY_THING, OUTPUT);
 	pinMode(LED_ALARMED_PIN, OUTPUT);
@@ -17,14 +17,14 @@ void actions_setup()
 void actions_openDoor()
 {
 	Serial.println(F("Debug: opening the door"));
-	digitalWrite(MOSFET_SOLENOID_THING, HIGH);
+	digitalWrite(DOOR_OPEN_PIN, HIGH);
 	fix_PanikDelay = millis();
 }
 
 void actions_closeDoor()
 {
 	Serial.println(F("Debug: Closing the door"));
-	digitalWrite(MOSFET_SOLENOID_THING, LOW);
+	digitalWrite(DOOR_OPEN_PIN, LOW);
 }
 
 void actions_WeeWooWeeWoo()

@@ -1,4 +1,5 @@
 #include "alarm.h"
+#include <Wiegand.h>
 
 void setup() 
 {
@@ -12,15 +13,19 @@ void setup()
 	radio_setup();
 	actions_setup();
     buttons_setup();
+    wiegand_setup();
 	
 	Serial.println(F("Debug: start-up finished"));
 }
 
 void loop() 
 {
-    buttons_checkFailsafe();
-    radio_processCommand();
+    //buttons_checkFailsafe();
+    //radio_processCommand();
+
+    wiegand_processCommand();
     
+    /*
     if (digitalRead(BUTTON_OPEN_PIN)) {
         buttonOpen_pressed();
     }
@@ -28,7 +33,7 @@ void loop()
     if (radio_getLastCommand() == 1) {
         buttonOpen_pressed();
         radio_dropLastCommand();
-    }
+    }*/
   
 	fsm_runStateMachine();
 }

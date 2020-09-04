@@ -1,3 +1,6 @@
+#ifndef _ALARM_H_ //Holy shit I'm dumb
+#define _ALARM_H_
+
 #include <Arduino.h>
 
 #define VERSION "0.3.1"
@@ -9,13 +12,17 @@
 
 #define BUTTON_ENABLE_PIN 13
 #define BUTTON_DISABLE_PIN 2
-#define BUTTON_FAILSAFE_PIN 10
-#define BUTTON_OPEN_PIN 4
-#define BUTTON_DOOR_PIN 3
+//#define BUTTON_FAILSAFE_PIN 10
+//#define BUTTON_OPEN_PIN 4
+#define BUTTON_DOOR_PIN 10
 
 #define MOSFET_LOUD_THING 6
 #define MOSFET_BLINKY_THING 5
-#define MOSFET_SOLENOID_THING 9
+
+#define WIEGAND_DATA1_PIN 2
+#define WIEGAND_DATA2_PIN 3
+
+#define DOOR_OPEN_PIN 6
 
 #define FIRE_ALARM_PIN A0
 #define LED_ALARMED_PIN 7
@@ -75,3 +82,8 @@ void actions_ledKalm();
 
 void actions_blinkAlarm();
 void actions_setAlarmBlinkPeriod(unsigned int period);
+
+void wiegand_processCommand();
+void wiegand_setup();
+
+#endif
