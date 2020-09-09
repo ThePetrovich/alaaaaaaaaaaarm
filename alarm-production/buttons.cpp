@@ -1,16 +1,9 @@
-#include "alarm.h"
+#include "buttons.h"
+#include <stdint.h>
 
 const uint32_t debounceDelay = 300;
 
-struct buttonSrtuct_t {
-	uint8_t lastState;
-	uint8_t state;
-	uint8_t bswitch;
-	uint32_t debounce;
-	int pin;
-};
-
-void buttons_setupButton(struct buttonStruct* button, int pin)
+void buttons_setupButton(struct buttonStruct_t *button, int pin)
 {
 	button->lastState = 0;
 	button->state = 0;
@@ -21,7 +14,7 @@ void buttons_setupButton(struct buttonStruct* button, int pin)
 	pinMode(pin, INPUT);
 }
 
-uint8_t buttons_checkButton(struct buttonStruct* button)
+uint8_t buttons_readButton(struct buttonStruct_t *button)
 {
 	uint8_t reading = digitalRead(button->pin);
 
@@ -34,11 +27,21 @@ uint8_t buttons_checkButton(struct buttonStruct* button)
 			button->state = reading;
 
 			if (reading == HIGH) {
-				button->switch = !button->switch;
+				button->bswitch = !button->bswitch;
 			}
 		}
 	}
 
 	button->lastState = reading;
 	return reading;
+}
+
+uint8_t buttons_checkButton(struct buttonStruct_t *button)
+{
+	return button->state;
+}
+
+uint8_t buttons_checkSwitch(struct buttonStruct_t *button)
+{
+	return button->bswitch;
 }

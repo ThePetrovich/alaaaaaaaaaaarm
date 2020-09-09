@@ -1,4 +1,8 @@
 #include "alarm.h"
+#include "actions.h"
+#include "commands.h"
+#include "devices.h"
+#include "statemachine.h"
 #include <Wiegand.h>
 
 void setup() 
@@ -11,7 +15,7 @@ void setup()
 	Serial.println(TIMESTAMP);
 	
 	actions_setup();
-   // buttons_setup();
+    commands_setup();
     wiegand_setup();
 	
 	Serial.println(F("Debug: start-up finished"));
@@ -19,7 +23,9 @@ void setup()
 
 void loop() 
 {
+    cmdparser_processCommand();
+    actions_readAllButtons();
     wiegand_processCommand();
-  
-//	fsm_runStateMachine();
+
+	fsm_runStateMachine();
 }

@@ -1,4 +1,6 @@
-/*#include "alarm.h"
+#include "statemachine.h"
+#include "actions.h"
+#include "alarm.h"
 
 int fsm_globalAlarmState = FSM_STATE_KALM;
 int fsm_globalPreviousState = FSM_STATE_KALM;
@@ -16,16 +18,18 @@ static void fsm_stateAlarmed()
     if (actions_sniff()) {
         fsm_globalPreviousState = fsm_globalAlarmState;
 		fsm_setState(FSM_STATE_PANIK);
+		Serial.println(F("Debug: PANIC! Fire detected!"));
     }
     
-	if (buttons_checkDetector() == -1) {
+	/*if (actions_checkDetector() == 0) {
 		fix_PanikDelay = millis();
 		fsm_globalPreviousState = fsm_globalAlarmState;
 		fsm_setState(FSM_STATE_PANIK);
-	}
+	}*/
 	
-	if (buttons_checkDisable() == 1) {
+	if (actions_checkDisable() == 1) {
 		fsm_setState(FSM_STATE_KALM);
+		Serial.println(F("Debug: Disabling the alarm"));
 	}
 }
 
@@ -35,12 +39,13 @@ static void fsm_stateKalm()
 	actions_calmTFDown();
     digitalWrite(MOSFET_BLINKY_THING, LOW); //Doing this explicitly because this sick fuck can't do this
 	
-	if (buttons_checkEnable() == 1) {
+	if (actions_checkEnable() == 1) {
 		for (int i = 0; i < 20; i++) {
 			delay(250);
 			digitalWrite(LED_ALARMED_PIN, !digitalRead(LED_ALARMED_PIN));
 		}
 		fsm_setState(FSM_STATE_ALARMED);
+		Serial.println(F("Debug: Enabling the alarm"));
 	}
 }
 
@@ -54,8 +59,9 @@ static void fsm_statePanik()
 			fix_PanikDelay = 0;
 		}
 		else {
-			if (buttons_checkDisable() == 1) {
+			if (actions_checkDisable() == 1) {
 				fsm_setState(FSM_STATE_KALM);
+				Serial.println(F("Debug: Disabling the alarm"));
 			}
 			
 			actions_blinkAlarm();
@@ -71,10 +77,12 @@ static void fsm_statePanik()
 	if (millis() - start >= PANIK_DURATION_MS) { //TODO: change delay
 		dumbFix = false;
 		fsm_setState(fsm_globalPreviousState);
+		Serial.println(F("Debug: Panic timeout, calming down"));
 	}
 	
-	if (buttons_checkDisable() == 1) {
+	if (actions_checkDisable() == 1) {
 		fsm_setState(FSM_STATE_KALM);
+		Serial.println(F("Debug: Disabling the alarm"));
 	}
 	actions_setAlarmBlinkPeriod(100);
 	
@@ -97,4 +105,4 @@ void fsm_runStateMachine()
 	if (fsm_globalAlarmState == FSM_STATE_KALM) fsm_stateKalm();
 	if (fsm_globalAlarmState == FSM_STATE_ALARMED) fsm_stateAlarmed();
 	if (fsm_globalAlarmState == FSM_STATE_PANIK) fsm_statePanik();
-}*/
+}

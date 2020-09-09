@@ -1,4 +1,4 @@
-#include <rtc.h>
+/*#include <rtc.h>
 
 DS1302 rtc;
 
@@ -17,4 +17,4 @@ void rtc_setup()
 void rtc_read()
 {
     now = rtc.now();
-}
+}*/

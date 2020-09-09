@@ -1,9 +1,16 @@
+#include "actions.h"
+#include "buttons.h"
+#include "statemachine.h"
 #include "alarm.h"
 
 extern unsigned long int fix_PanikDelay;
 static unsigned long int act_blinkStart = 0;
 static unsigned int act_blinkPeriod = 0;
 static bool act_alarmLedState = false;
+
+static struct buttonStruct_t detector;
+static struct buttonStruct_t enable;
+static struct buttonStruct_t disable;
 
 void actions_setup()
 {
@@ -12,6 +19,38 @@ void actions_setup()
 	pinMode(MOSFET_BLINKY_THING, OUTPUT);
 	pinMode(LED_ALARMED_PIN, OUTPUT);
 	pinMode(LED_KALM_PIN, OUTPUT);
+
+	buttons_setupButton(&detector, OPEN_DETECT_PIN);
+	buttons_setupButton(&enable, BUTTON_ENABLE_PIN);
+	buttons_setupButton(&disable, BUTTON_DISABLE_PIN);
+}
+
+uint8_t actions_checkDetector()
+{
+	buttons_readButton(&detector);
+	uint8_t result = buttons_checkButton(&detector);
+	return result;
+}
+
+uint8_t actions_checkEnable()
+{
+	buttons_readButton(&enable);
+	uint8_t result = buttons_checkButton(&enable);
+	return result;
+}
+
+uint8_t actions_checkDisable()
+{
+	buttons_readButton(&disable);
+	uint8_t result = buttons_checkButton(&disable);
+	return result;
+}
+
+void actions_readAllButtons()
+{
+	buttons_readButton(&detector);
+	buttons_readButton(&disable);
+	buttons_readButton(&enable);
 }
 
 void actions_WeeWooWeeWoo()

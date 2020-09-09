@@ -1,5 +1,6 @@
 #include "alarm.h"
 #include "keys.h"
+#include "devices.h"
 #include <Wiegand.h>
 #include <String.h>
 
@@ -17,11 +18,11 @@ void wiegand_processCommand()
     if(wg.available())
 	{
         code = wg.getCode();
-		Serial.print("Wiegand HEX = ");
+		Serial.print(F("Wiegand HEX = "));
 		Serial.print(code, HEX);
-		Serial.print(", DECIMAL = ");
+		Serial.print(F(", DECIMAL = "));
 		Serial.print(code);
-		Serial.print(", Type W");
+		Serial.print(F(", Type W"));
 		Serial.println(wg.getWiegandType());    
 
         for (int i = 0; i < wg_authorized_keys_num; i++) {
@@ -33,8 +34,8 @@ void wiegand_processCommand()
         }
 
         if (result) {
-            Serial.println("Found keycard code in authorized keycards list");
-            Serial.print("Username = ");
+            Serial.println(F("Found keycard code in authorized keycards list"));
+            Serial.print(F("Username = "));
             Serial.println(wg_names[index]);
             pinMode(DOOR_OPEN_PIN, OUTPUT);
             delay(500);
