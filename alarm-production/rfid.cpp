@@ -1,4 +1,5 @@
 #include "alarm.h"
+#include "keys.h"
 #include <Wiegand.h>
 #include <String.h>
 

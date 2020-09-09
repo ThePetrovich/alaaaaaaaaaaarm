@@ -19,8 +19,8 @@
 #define MOSFET_LOUD_THING 6
 #define MOSFET_BLINKY_THING 5
 
-#define WIEGAND_DATA1_PIN 2
-#define WIEGAND_DATA2_PIN 3
+#define WIEGAND_DATA1_PIN 3
+#define WIEGAND_DATA2_PIN 2
 
 #define DOOR_OPEN_PIN 4
 
@@ -35,19 +35,14 @@
 
 #define FIRE_CHECKS_COUNT 10000
 
-DateTime now;
-uint32_t wg_authorized_keys[] = {0x69EE84}; //Debug key
-char wg_names[][16] = {"Debug"};
-const uint8_t wg_authorized_keys_num = 1;
-
 void fsm_setState(int state);
 int fsm_getState();
 void fsm_runStateMachine();
 
-void buttons_setup();
-int buttons_checkDetector();
-int buttons_checkEnable();
-int buttons_checkDisable();
+//void buttons_setup();
+//int buttons_checkDetector();
+//int buttons_checkEnable();
+//int buttons_checkDisable();
 
 void actions_setup();
 

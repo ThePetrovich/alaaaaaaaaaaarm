@@ -11,7 +11,7 @@ void setup()
 	Serial.println(TIMESTAMP);
 	
 	actions_setup();
-    buttons_setup();
+   // buttons_setup();
     wiegand_setup();
 	
 	Serial.println(F("Debug: start-up finished"));
@@ -21,5 +21,5 @@ void loop()
 {
     wiegand_processCommand();
   
-	fsm_runStateMachine();
+//	fsm_runStateMachine();
 }

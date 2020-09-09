@@ -1,60 +1,44 @@
 #include "alarm.h"
-#include <Button.h>
 
-Button buttonEnable(BUTTON_ENABLE_PIN);
-Button buttonDisable(BUTTON_DISABLE_PIN);
-//Button buttonFailsafe(BUTTON_FAILSAFE_PIN);
-//Button buttonOpen(BUTTON_OPEN_PIN);
-Button buttonDetector(BUTTON_DOOR_PIN);
+const uint32_t debounceDelay = 300;
 
-void buttons_setup()
+struct buttonSrtuct_t {
+	uint8_t lastState;
+	uint8_t state;
+	uint8_t bswitch;
+	uint32_t debounce;
+	int pin;
+};
+
+void buttons_setupButton(struct buttonStruct* button, int pin)
 {
-	buttonEnable.begin();
-	buttonDisable.begin();
-	buttonDetector.begin();
+	button->lastState = 0;
+	button->state = 0;
+	button->bswitch = 0;
+	button->debounce = 0;
+	button->pin = pin;
+
+	pinMode(pin, INPUT);
 }
 
-int buttons_checkDetector()
+uint8_t buttons_checkButton(struct buttonStruct* button)
 {
-	if (buttonDetector.toggled()) {
-		if (buttonDetector.read() == Button::PRESSED) {
-			Serial.println(F("Debug: DETECTOR button pressed"));
-			return 1;
-		}
-		else {
-			Serial.println(F("Debug: DETECTOR button released"));
-			return -1;
-		}	
-	}
-	return 0;
-}
+	uint8_t reading = digitalRead(button->pin);
 
-int buttons_checkEnable()
-{
-	if (buttonEnable.toggled()) {
-		if (buttonEnable.read() == Button::PRESSED) {
-			Serial.println(F("Debug: ENABLE button pressed"));
-			return 1;
-		}
-		else {
-			Serial.println(F("Debug: ENABLE button released"));
-			return -1;
-		}	
+	if (reading != button->lastState) {
+		button->debounce = millis();
 	}
-	return 0;
-}
 
-int buttons_checkDisable()
-{
-	if (buttonDisable.toggled()) {
-		if (buttonDisable.read() == Button::PRESSED) {
-			Serial.println(F("Debug: DISABLE button pressed"));
-			return 1;
+	if ((millis() - button->debounce) > debounceDelay) {
+		if (reading != button->state) {
+			button->state = reading;
+
+			if (reading == HIGH) {
+				button->switch = !button->switch;
+			}
 		}
-		else {
-			Serial.println(F("Debug: DISABLE button released"));
-			return -1;
-		}	
 	}
-	return 0;
+
+	button->lastState = reading;
+	return reading;
 }

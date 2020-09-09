@@ -1,4 +1,4 @@
-#include "alarm.h"
+/*#include "alarm.h"
 
 int fsm_globalAlarmState = FSM_STATE_KALM;
 int fsm_globalPreviousState = FSM_STATE_KALM;
@@ -97,4 +97,4 @@ void fsm_runStateMachine()
 	if (fsm_globalAlarmState == FSM_STATE_KALM) fsm_stateKalm();
 	if (fsm_globalAlarmState == FSM_STATE_ALARMED) fsm_stateAlarmed();
 	if (fsm_globalAlarmState == FSM_STATE_PANIK) fsm_statePanik();
-}
+}*/
