@@ -19,8 +19,8 @@
 #define MOSFET_LOUD_THING 6
 #define MOSFET_BLINKY_THING 5
 
-#define WIEGAND_DATA1_PIN 3
-#define WIEGAND_DATA2_PIN 2
+#define rfid_DATA1_PIN 3
+#define rfid_DATA2_PIN 2
 
 #define DOOR_OPEN_PIN 4
 

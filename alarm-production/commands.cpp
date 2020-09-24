@@ -1,5 +1,20 @@
 #include "commands.h"
 #include "statemachine.h"
+#include "alarm.h"
+#include <string.h>
+
+struct command {
+    void(*handler)();
+    char name[MAX_COMMAND_LENGTH];
+};
+
+static struct cmdManager {
+    char cmd_buf[64];
+    uint8_t cmd_idx;
+    int activeCommand = -1;
+    struct command regCmds[MAX_COMMAND_NUM];
+    uint8_t regCmd_idx;
+} cmdManager;
 
 void commands_test()
 {
@@ -26,9 +41,83 @@ void commands_forcePanik()
 
 void commands_setup()
 {
-    cmdparser_setup();
-    cmdparser_registerCommand((char*)"test", commands_test);
-    cmdparser_registerCommand((char*)"set_kalm", commands_forceDisable);
-    cmdparser_registerCommand((char*)"set_alarmed", commands_forceEnable);
-    cmdparser_registerCommand((char*)"set_panik", commands_forcePanik);
+    cmdManager.activeCommand = -1;
+    commands_registerCommand((char*)"test", commands_test);
+    commands_registerCommand((char*)"set_kalm", commands_forceDisable);
+    commands_registerCommand((char*)"set_alarmed", commands_forceEnable);
+    commands_registerCommand((char*)"set_panik", commands_forcePanik);
+}
+
+void commands_registerCommand(char* cmdName, void(*handler)())
+{
+    if (cmdManager.regCmd_idx < MAX_COMMAND_NUM) {
+        cmdManager.regCmds[cmdManager.regCmd_idx].handler = handler;
+        strncpy(cmdManager.regCmds[cmdManager.regCmd_idx].name, cmdName, MAX_COMMAND_LENGTH);
+        cmdManager.regCmd_idx++;
+    }
+}
+
+void commands_flushReceiveBuffer()
+{
+    cmdManager.cmd_idx = 0;
+    cmdManager.cmd_buf[0] = 0;
+}
+
+void commands_processCommand()
+{
+    if (cmdManager.activeCommand != -1) {
+        if (cmdManager.regCmds[cmdManager.activeCommand].handler != NULL) {
+            (cmdManager.regCmds[cmdManager.activeCommand].handler)();
+        }
+        else {
+            Serial.println("Debug: ERROR - attempt to execute a NULL command");
+        }
+    }
+    cmdManager.activeCommand = -1;
+}
+
+static void commands_processChar(char c)
+{
+    if (c == '\n' || c == '\r') {
+        cmdManager.cmd_buf[cmdManager.cmd_idx] = 0;
+        for (int i = 0; i < cmdManager.regCmd_idx; i++) {
+            if (strncmp(cmdManager.cmd_buf, cmdManager.regCmds[i].name, MAX_COMMAND_LENGTH) == 0) {
+                cmdManager.activeCommand = i;
+                break;
+            }
+        }
+        commands_flushReceiveBuffer();
+    }
+    else {
+        if (cmdManager.cmd_idx < 64) {
+            cmdManager.cmd_buf[cmdManager.cmd_idx] = c;
+            cmdManager.cmd_idx++;
+        }
+    }
+}
+
+void serialEvent()
+{
+    char data = 0; 
+    while (Serial.available()) {
+        data = (char)Serial.read();
+        commands_processChar(data);
+    }
+}
+
+char* commands_waitForInput()
+{
+    char data = 0; 
+    while (data != '\n' && data != '\r') {
+        if (Serial.available()) {
+            data = (char)Serial.read();
+            if (cmdManager.cmd_idx < 64) {
+                cmdManager.cmd_buf[cmdManager.cmd_idx] = data;
+                cmdManager.cmd_idx++;
+            }
+        }
+    }
+    cmdManager.cmd_buf[cmdManager.cmd_idx + 1] = 0;
+
+    return cmdManager.cmd_buf;
 }

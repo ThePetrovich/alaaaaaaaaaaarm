@@ -16,7 +16,7 @@ void setup()
 	
 	actions_setup();
     commands_setup();
-    wiegand_setup();
+    rfid_setup();
 	
 	Serial.println(F("Debug: start-up finished"));
 }
@@ -25,7 +25,7 @@ void loop()
 {
     cmdparser_processCommand();
     actions_readAllButtons();
-    wiegand_processCommand();
+    rfid_processCommand();
 
 	fsm_runStateMachine();
 }
