@@ -1,9 +1,17 @@
+/*
+ * alarm-production.ino
+ * 
+ * Created: 09.06.2021 07:30:35
+ * Author: ThePetrovich
+ */
+
+
+#include <Wiegand.h>
 #include "alarm.h"
+#include "rfid.h"
 #include "actions.h"
 #include "commands.h"
-#include "devices.h"
 #include "statemachine.h"
-#include <Wiegand.h>
 
 void setup() 
 {
@@ -15,17 +23,17 @@ void setup()
 	Serial.println(TIMESTAMP);
 	
 	actions_setup();
-    commands_setup();
-    rfid_setup();
+	commands_setup();
+	rfid_setup();
 	
 	Serial.println(F("Debug: start-up finished"));
 }
 
 void loop() 
 {
-    cmdparser_processCommand();
-    actions_readAllButtons();
-    rfid_processCommand();
+	commands_processCommand();
+	actions_readAllButtons();
+	rfid_processCommand();
 
 	fsm_runStateMachine();
 }

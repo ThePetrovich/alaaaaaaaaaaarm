@@ -1,8 +1,15 @@
-#ifndef _ACTIONS_H_
-#define _ACTIONS_H_
+/*
+ * actions.h
+ * 
+ * Created: 09.06.2021 07:30:41
+ * Author: ThePetrovich
+ */
 
-#include <Arduino.h>
-#include "alarm.h"
+
+#ifndef _ACTIONS_ALARM_H_
+#define _ACTIONS_ALARM_H_
+
+#include <stdint.h>
 
 void actions_setup();
 

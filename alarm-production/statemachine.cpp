@@ -1,3 +1,12 @@
+/*
+ * statemachine.cpp
+ * 
+ * Created: 09.06.2021 07:30:35
+ * Author: ThePetrovich
+ */
+
+
+#include <Arduino.h>
 #include "statemachine.h"
 #include "actions.h"
 #include "alarm.h"
@@ -11,16 +20,16 @@ static void fsm_stateAlarmed()
 {	
 	actions_setAlarmBlinkPeriod(2000);
 	actions_ledAlarmed();
-    digitalWrite(MOSFET_LOUD_THING, LOW);
+	digitalWrite(MOSFET_LOUD_THING, LOW);
 	
 	actions_blinkAlarm();
 	
-    if (actions_sniff()) {
-        fsm_globalPreviousState = fsm_globalAlarmState;
+	if (actions_sniff()) {
+		fsm_globalPreviousState = fsm_globalAlarmState;
 		fsm_setState(FSM_STATE_PANIK);
 		Serial.println(F("Debug: PANIC! Fire detected!"));
-    }
-    
+	}
+	
 	/*if (actions_checkDetector() == 0) {
 		fix_PanikDelay = millis();
 		fsm_globalPreviousState = fsm_globalAlarmState;
@@ -37,7 +46,7 @@ static void fsm_stateKalm()
 {
 	actions_ledKalm();
 	actions_calmTFDown();
-    digitalWrite(MOSFET_BLINKY_THING, LOW); //Doing this explicitly because this sick fuck can't do this
+	digitalWrite(MOSFET_BLINKY_THING, LOW); //Doing this explicitly because this sick fuck can't do this
 	
 	if (actions_checkEnable() == 1) {
 		for (int i = 0; i < 20; i++) {

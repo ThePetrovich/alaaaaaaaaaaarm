@@ -1,7 +1,13 @@
-#ifndef _ALARM_H_ //Holy shit I'm dumb
-#define _ALARM_H_
+/*
+ * alarm.h
+ * 
+ * Created: 09.06.2021 07:30:35
+ * Author: ThePetrovich
+ */
 
-#include <Arduino.h>
+
+#ifndef _ALARM_ALARM_H_ //Holy shit I'm dumb
+#define _ALARM_ALARM_H_
 
 #define VERSION "0.5.0"
 #define TIMESTAMP __TIMESTAMP__

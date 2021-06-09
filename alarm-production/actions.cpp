@@ -1,3 +1,12 @@
+/*
+ * actions.cpp
+ * 
+ * Created: 09.06.2021 07:30:35
+ * Author: ThePetrovich
+ */
+
+
+#include <Arduino.h>
 #include "actions.h"
 #include "buttons.h"
 #include "statemachine.h"
@@ -69,7 +78,7 @@ void actions_calmTFDown()
 
 int actions_sniff()
 {
-    int returnCode = 0;
+	int returnCode = 0;
 	static unsigned int fireChecksCount = 0;
 	static unsigned int fireChecksDetected = 0;
 	static unsigned int fireChecksFalse = 0;

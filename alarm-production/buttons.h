@@ -1,7 +1,14 @@
-#ifndef _BUTTONS_H_
-#define _BUTTONS_H_
+/*
+ * buttons.h
+ * 
+ * Created: 09.06.2021 07:30:41
+ * Author: ThePetrovich
+ */
 
-#include <arduino.h>
+
+#ifndef _BUTTONS_ALARM_H_
+#define _BUTTONS_ALARM_H_
+
 #include <stdint.h>
 
 struct buttonStruct_t {
