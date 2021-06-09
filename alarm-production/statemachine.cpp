@@ -27,7 +27,7 @@ static void fsm_stateAlarmed()
 	if (actions_sniff()) {
 		fsm_globalPreviousState = fsm_globalAlarmState;
 		fsm_setState(FSM_STATE_PANIK);
-		Serial.println(F("Debug: PANIC! Fire detected!"));
+		Serial.println(F("[Debug] fsm: PANIC! Fire detected!"));
 	}
 	
 	/*if (actions_checkDetector() == 0) {
@@ -38,7 +38,7 @@ static void fsm_stateAlarmed()
 	
 	if (actions_checkDisable() == 1) {
 		fsm_setState(FSM_STATE_KALM);
-		Serial.println(F("Debug: Disabling the alarm"));
+		Serial.println(F("[Debug] fsm: Disabling the alarm"));
 	}
 }
 
@@ -54,7 +54,7 @@ static void fsm_stateKalm()
 			digitalWrite(LED_ALARMED_PIN, !digitalRead(LED_ALARMED_PIN));
 		}
 		fsm_setState(FSM_STATE_ALARMED);
-		Serial.println(F("Debug: Enabling the alarm"));
+		Serial.println(F("[Debug] fsm: Enabling the alarm"));
 	}
 }
 
@@ -70,7 +70,7 @@ static void fsm_statePanik()
 		else {
 			if (actions_checkDisable() == 1) {
 				fsm_setState(FSM_STATE_KALM);
-				Serial.println(F("Debug: Disabling the alarm"));
+				Serial.println(F("[Debug] fsm: Disabling the alarm"));
 			}
 			
 			actions_blinkAlarm();
@@ -86,12 +86,12 @@ static void fsm_statePanik()
 	if (millis() - start >= PANIK_DURATION_MS) { //TODO: change delay
 		dumbFix = false;
 		fsm_setState(fsm_globalPreviousState);
-		Serial.println(F("Debug: Panic timeout, calming down"));
+		Serial.println(F("[Debug] fsm: Panic timeout, calming down"));
 	}
 	
 	if (actions_checkDisable() == 1) {
 		fsm_setState(FSM_STATE_KALM);
-		Serial.println(F("Debug: Disabling the alarm"));
+		Serial.println(F("[Debug] fsm: Disabling the alarm"));
 	}
 	actions_setAlarmBlinkPeriod(100);
 	

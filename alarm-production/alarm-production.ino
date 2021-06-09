@@ -6,6 +6,7 @@
  */
 
 
+#include <Arduino.h>
 #include <Wiegand.h>
 #include "alarm.h"
 #include "rfid.h"
@@ -16,8 +17,8 @@
 void setup() 
 {
 	Serial.begin(9600);
-	Serial.println(F("Debug: starting up"));
-	Serial.print(F("Debug: alarm-production version "));
+	Serial.println(F("[Debug] init: starting up"));
+	Serial.print(F("[Debug] init: alarm-production version "));
 	Serial.print(VERSION);
 	Serial.print(F(" built "));
 	Serial.println(TIMESTAMP);
@@ -26,7 +27,7 @@ void setup()
 	commands_setup();
 	rfid_setup();
 	
-	Serial.println(F("Debug: start-up finished"));
+	Serial.println(F("[Debug] init: start-up finished"));
 }
 
 void loop() 

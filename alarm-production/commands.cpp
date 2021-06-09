@@ -46,7 +46,7 @@ void commands_setup()
 	commands_registerCommand((char*)"set_panik", commands_forcePanik);
 }
 
-void commands_registerCommand(char* cmdName, void(*handler)())
+void commands_registerCommand(char *cmdName, void(*handler)())
 {
 	if (cmdManager.regCmd_idx < MAX_COMMAND_NUM) {
 		cmdManager.regCmds[cmdManager.regCmd_idx].handler = handler;
@@ -68,7 +68,7 @@ void commands_processCommand()
 			(cmdManager.regCmds[cmdManager.activeCommand].handler)();
 		}
 		else {
-			Serial.println("Debug: ERROR - attempt to execute a NULL command");
+			Serial.println("[Debug] commands: ERROR - attempt to execute a NULL command");
 		}
 	}
 	cmdManager.activeCommand = -1;
@@ -103,7 +103,7 @@ void serialEvent()
 	}
 }
 
-char* commands_waitForInput()
+char *commands_waitForInput()
 {
 	char data = 0; 
 	while (data != '\n' && data != '\r') {

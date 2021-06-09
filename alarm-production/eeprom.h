@@ -9,16 +9,16 @@
 #ifndef _EEPROM_ALARM_H_
 #define _EEPROM_ALARM_H_
 
-#define EEPROM_MAGIC 0xDEADC0DE
-
 #include <stdint.h>
+
+#define EEPROM_MAGIC 0xDEADC0DE
 
 typedef struct eeprom_header 
 {
 	uint32_t magic;
 	uint8_t storedKeys;
 	uint8_t flags;
-	uint16_t keyStoreStart;
+	void *keystoreStart;
 } alarm_eepromHeader;
 
 typedef struct eeprom_key 

@@ -12,7 +12,7 @@
 
 const uint32_t debounceDelay = 300;
 
-void buttons_setupButton(struct buttonStruct_t *button, int pin)
+void buttons_setupButton(alarm_button *button, int pin)
 {
 	button->lastState = 0;
 	button->state = 0;
@@ -23,7 +23,7 @@ void buttons_setupButton(struct buttonStruct_t *button, int pin)
 	pinMode(pin, INPUT);
 }
 
-uint8_t buttons_readButton(struct buttonStruct_t *button)
+uint8_t buttons_readButton(alarm_button *button)
 {
 	uint8_t reading = digitalRead(button->pin);
 
@@ -45,12 +45,12 @@ uint8_t buttons_readButton(struct buttonStruct_t *button)
 	return reading;
 }
 
-uint8_t buttons_checkButton(struct buttonStruct_t *button)
+uint8_t buttons_checkButton(alarm_button *button)
 {
 	return button->state;
 }
 
-uint8_t buttons_checkSwitch(struct buttonStruct_t *button)
+uint8_t buttons_checkSwitch(alarm_button *button)
 {
 	return button->bswitch;
 }

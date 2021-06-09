@@ -36,7 +36,7 @@ void loop()
 	const char *msgPanik = RADIO_CMD_PANIK;
 	
 	if (panik.checkPress() == -1) {
-        Serial.println("Debug: PANIK long press");
+        Serial.println("[Debug] remote: PANIK long press");
 		
 		digitalWrite(13, true);
         
@@ -48,7 +48,7 @@ void loop()
 		digitalWrite(13, false);
     } 
 	else if (panik.checkPress() == 1)	{
-        Serial.println("Debug: PANIK short press");
+        Serial.println("[Debug] remote: PANIK short press");
 		
 		digitalWrite(13, true);
         
@@ -61,7 +61,7 @@ void loop()
     }
 	
 	if (open.checkPress() == 1) {
-        Serial.println("Debug: OPEN short press");
+        Serial.println("[Debug] remote: OPEN short press");
 		
 		digitalWrite(13, true);
         

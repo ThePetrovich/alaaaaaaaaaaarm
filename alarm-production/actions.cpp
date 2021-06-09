@@ -17,9 +17,9 @@ static unsigned long int act_blinkStart = 0;
 static unsigned int act_blinkPeriod = 0;
 static bool act_alarmLedState = false;
 
-static struct buttonStruct_t detector;
-static struct buttonStruct_t enable;
-static struct buttonStruct_t disable;
+static alarm_button detector;
+static alarm_button enable;
+static alarm_button disable;
 
 void actions_setup()
 {
@@ -64,14 +64,14 @@ void actions_readAllButtons()
 
 void actions_WeeWooWeeWoo()
 {
-	//Serial.println(F("Debug: enabling the alarm"));
+	Serial.println(F("[Debug] actions: enabling the alarm"));
 	digitalWrite(MOSFET_LOUD_THING, HIGH);
 	actions_blinkAlarm();
 }
 
 void actions_calmTFDown()
 {
-	//Serial.println(F("Debug: disabling the alarm"));
+	Serial.println(F("[Debug] actions: disabling the alarm"));
 	digitalWrite(MOSFET_LOUD_THING, LOW);
 	digitalWrite(MOSFET_BLINKY_THING, LOW);
 }
@@ -85,7 +85,7 @@ int actions_sniff()
 	static bool fireTriggered = false;
 
 	int result = analogRead(FIRE_ALARM_PIN);
-//	Serial.print(F("Debug: sniffing: "));
+//	Serial.print(F("[Debug] sniffing: "));
 //	Serial.println(result);
 	if (result <= 512 && !fireTriggered) {
 		fireTriggered = true;
@@ -106,7 +106,7 @@ int actions_sniff()
 		if (fireChecksCount >= FIRE_CHECKS_COUNT) {
 			if (fireChecksDetected > fireChecksFalse) {
 				returnCode = 1;
-				Serial.println(F("Debug: oh noes, fire detected"));
+				Serial.println(F("[Debug] actions: oh noes, fire detected"));
 			}
 			fireTriggered = false;
 			fireChecksCount = 0;

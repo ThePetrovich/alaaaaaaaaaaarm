@@ -11,17 +11,17 @@
 
 #include <stdint.h>
 
-struct buttonStruct_t {
+typedef struct alarm_button {
 	uint8_t lastState;
 	uint8_t state;
 	uint8_t bswitch;
 	uint32_t debounce;
 	int pin;
-};
+} alarm_button;
 
-void buttons_setupButton(struct buttonStruct_t *button, int pin);
-uint8_t buttons_readButton(struct buttonStruct_t *button);
-uint8_t buttons_checkButton(struct buttonStruct_t *button);
-uint8_t buttons_checkSwitch(struct buttonStruct_t *button);
+void buttons_setupButton(alarm_button *button, int pin);
+uint8_t buttons_readButton(alarm_button *button);
+uint8_t buttons_checkButton(alarm_button *button);
+uint8_t buttons_checkSwitch(alarm_button *button);
 
 #endif
