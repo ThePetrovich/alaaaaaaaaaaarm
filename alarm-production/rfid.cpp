@@ -14,7 +14,6 @@
 #include <avr/eeprom.h>
 #include "rfid.h"
 #include "alarm.h"
-#include "keys.h"
 #include "commands.h"
 #include "eeprom.h"
 
