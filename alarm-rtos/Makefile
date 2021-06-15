@@ -6,8 +6,7 @@ MCU = atmega2560
 INCLUDES = -I"./include" -I "./cubesat-rtos/include"
 
 # Project directories
-SRCDIR = kernel
-TESTDIR = tests
+SRCDIR = alarm
 BUILDDIR = build
 TARGDIR = bin
 
@@ -73,7 +72,7 @@ ifneq ($(strip $(DIRS)),)
 endif
 
 rtos:
-	make -C cubesat-rtos
+	make -C cubesat-rtos arch=avr mcu=atmega2560
 
 # Compile target
 $(TARG):  rtos $(OBJS)
