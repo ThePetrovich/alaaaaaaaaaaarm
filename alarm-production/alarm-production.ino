@@ -13,6 +13,7 @@
 #include "actions.h"
 #include "commands.h"
 #include "statemachine.h"
+#include "sched.h"
 
 void setup() 
 {

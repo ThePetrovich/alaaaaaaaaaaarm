@@ -64,14 +64,14 @@ void actions_readAllButtons()
 
 void actions_WeeWooWeeWoo()
 {
-	Serial.println(F("[Debug] actions: enabling the alarm"));
+	//Serial.println(F("[Debug] actions: enabling the alarm"));
 	digitalWrite(MOSFET_LOUD_THING, HIGH);
 	actions_blinkAlarm();
 }
 
 void actions_calmTFDown()
 {
-	Serial.println(F("[Debug] actions: disabling the alarm"));
+	//Serial.println(F("[Debug] actions: disabling the alarm"));
 	digitalWrite(MOSFET_LOUD_THING, LOW);
 	digitalWrite(MOSFET_BLINKY_THING, LOW);
 }

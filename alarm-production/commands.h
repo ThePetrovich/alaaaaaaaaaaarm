@@ -9,6 +9,7 @@
 #ifndef _SERIALCMD_ALARM_H_
 #define _SERIALCMD_ALARM_H_
 
+#include <stdint.h>
 #include "alarm.h"
 
 typedef struct command 

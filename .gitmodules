@@ -1,0 +1,3 @@
+[submodule "alarm-rtos/cubesat-rtos"]
+	path = alarm-rtos/cubesat-rtos
+	url = https://github.com/cansat-ptl/cubesat-rtos
