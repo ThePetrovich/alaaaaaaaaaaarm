@@ -75,8 +75,8 @@ rtos:
 	make -C cubesat-rtos arch=avr mcu=atmega2560
 
 # Compile target
-$(TARG):  rtos $(OBJS)
-	$(CC) -o $(TARGDIR)/$@.elf $(OBJS) $(OBJS) $(LDFLAGS)
+$(TARG): rtos $(OBJS)
+	$(CC) -o $(TARGDIR)/$@.elf $(OBJS) $(LDFLAGS)
 	$(OBJCOPY_CMD)  $(OBJCOPY_HEX_FLAGS) "$(TARGDIR)/$(TARG).elf" "$(TARGDIR)/$(TARG).hex"
 	$(OBJCOPY_CMD)  $(OBJCOPY_EEP_FLAGS) "$(TARGDIR)/$(TARG).elf" "$(TARGDIR)/$(TARG).eep" || exit 0
 	$(OBJDUMP_CMD)  $(OBJDUMP_LSS_FLAGS) "$(TARGDIR)/$(TARG).elf" > "$(TARGDIR)/$(TARG).lss"
