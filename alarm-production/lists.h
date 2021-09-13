@@ -9,10 +9,6 @@
 #ifndef SCHED_LISTS_H_
 #define SCHED_LISTS_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #define sched_LISTITEM_STRUCT_SIZE (sizeof(struct sListItemStruct_t))
 
 typedef struct sLinkedListStruct_t sLinkedList_t;
@@ -22,17 +18,21 @@ struct sJobStruct_t;
 
 struct sLinkedListStruct_t
 {
-	sLinkedListItem_t* head;
-	sLinkedListItem_t* tail;
+    sLinkedListItem_t* head;
+    sLinkedListItem_t* tail;
 };
 
 struct sListItemStruct_t
 {
-	sLinkedList_t* list;
-	sLinkedListItem_t* next;
-	sLinkedListItem_t* prev;
-	struct sJobStruct_t* data;
+    sLinkedList_t* list;
+    sLinkedListItem_t* next;
+    sLinkedListItem_t* prev;
+    struct sJobStruct_t* data;
 };
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 void sched_listAddBack(sLinkedList_t* list, sLinkedListItem_t* item);
 void sched_listAddFront(sLinkedList_t* list, sLinkedListItem_t* item);

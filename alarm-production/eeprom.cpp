@@ -10,6 +10,7 @@
 #include <String.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <avr/io.h>
 #include <avr/eeprom.h>
 #include <util/crc16.h>
 #include "alarm.h"
