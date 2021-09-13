@@ -11,20 +11,23 @@
 
 #include <stdint.h>
 
+#define ACTIONS_OUTPUT_ALARM 0
+#define ACTIONS_OUTPUT_LOUD 1
+#define ACTIONS_OUTPUT_LED_ALARMED 2
+#define ACTIONS_OUTPUT_LED_KALM 3
+
+#define ACTIONS_INPUT_DETECTOR 4
+#define ACTIONS_INPUT_BTN_ENABLE 5
+#define ACTIONS_INPUT_BTN_DISABLE 6
+
 void actions_setup();
 
-uint8_t actions_checkDetector();
-uint8_t actions_checkEnable();
-uint8_t actions_checkDisable();
+uint8_t actions_checkInput(int input);
 void actions_readAllButtons();
 
-void actions_WeeWooWeeWoo(); //Enables the loud thingy
-void actions_calmTFDown(); //Disables the loud thingy
 int actions_sniff(); //Checks the smoke detector
 void actions_bonk(); //Disables everything
-void actions_ledAlarmed();
-void actions_ledKalm();
-void actions_blinkAlarm();
-void actions_setAlarmBlinkPeriod(unsigned int period);
+void actions_setOutput(int output, int state);
+void actions_setSwitchPeriod(int output, unsigned int period);
 
 #endif

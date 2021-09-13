@@ -14,6 +14,10 @@
 #include "commands.h"
 #include "statemachine.h"
 #include "sched.h"
+#include "timer2.h"
+
+sSched_t schedMain;
+sJob_t fsm;
 
 void setup() 
 {
@@ -23,10 +27,20 @@ void setup()
 	Serial.print(VERSION);
 	Serial.print(F(" built "));
 	Serial.println(TIMESTAMP);
+
+	sched_initScheduler(&schedMain);
+	timer2_init(&schedMain);
+
+	sched_createJob(&schedMain, &fsm, (void(*)(void*))fsm_runStateMachine, NULL, 10, 10, 0, "fsm_main");
+	sched_activateJob(&fsm);
 	
+	fsm_init();
+
 	actions_setup();
 	commands_setup();
 	rfid_setup();
+
+	timer2_enable();
 	
 	Serial.println(F("[Debug] init: start-up finished"));
 }
@@ -37,5 +51,5 @@ void loop()
 	actions_readAllButtons();
 	rfid_processCommand();
 
-	fsm_runStateMachine();
+	sched_run(&schedMain);
 }

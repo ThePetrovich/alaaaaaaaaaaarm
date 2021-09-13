@@ -11,15 +11,19 @@
 #include "buttons.h"
 #include "statemachine.h"
 #include "alarm.h"
-
-extern unsigned long int fix_PanikDelay;
-static unsigned long int act_blinkStart = 0;
-static unsigned int act_blinkPeriod = 0;
-static bool act_alarmLedState = false;
+#include "sched.h"
 
 static alarm_button detector;
 static alarm_button enable;
 static alarm_button disable;
+
+extern sSched_t schedMain;
+
+sJob_t actions_jobBlinkAlarm;
+sJob_t actions_jobBlinkLed1;
+sJob_t actions_jobBlinkLed2;
+
+void actions_blink(void* output);
 
 void actions_setup()
 {
@@ -32,48 +36,88 @@ void actions_setup()
 	buttons_setupButton(&detector, OPEN_DETECT_PIN);
 	buttons_setupButton(&enable, BUTTON_ENABLE_PIN);
 	buttons_setupButton(&disable, BUTTON_DISABLE_PIN);
+
+	sched_createJob(&schedMain, &actions_jobBlinkAlarm, actions_blink, (void*)ACTIONS_OUTPUT_ALARM, 0, 0, 4, "act_blink");
+	sched_activateJob(&actions_jobBlinkAlarm);
+	sched_createJob(&schedMain, &actions_jobBlinkLed1, actions_blink, (void*)ACTIONS_OUTPUT_LED_ALARMED, 0, 0, 4, "act_blink1");
+	sched_activateJob(&actions_jobBlinkLed1);
+	sched_createJob(&schedMain, &actions_jobBlinkLed2, actions_blink, (void*)ACTIONS_OUTPUT_LED_KALM, 0, 0, 4, "act_blink2");
+	sched_activateJob(&actions_jobBlinkLed2);
 }
 
-uint8_t actions_checkDetector()
+uint8_t actions_checkInput(int input)
 {
-	buttons_readButton(&detector);
-	uint8_t result = buttons_checkButton(&detector);
+	uint8_t result = 0;
+
+	switch(input) {
+		case ACTIONS_INPUT_BTN_DISABLE:
+			result = buttons_readButton(&disable);
+			break;
+		case ACTIONS_INPUT_BTN_ENABLE:
+			result = buttons_readButton(&enable);
+			break;
+		case ACTIONS_INPUT_DETECTOR:
+			result = buttons_readButton(&detector);
+			break;
+		case ACTIONS_OUTPUT_ALARM:
+			result = digitalRead(MOSFET_BLINKY_THING);
+			break;
+		case ACTIONS_OUTPUT_LOUD:
+			result = digitalRead(MOSFET_LOUD_THING);
+			break;
+		case ACTIONS_OUTPUT_LED_ALARMED:
+			result = digitalRead(LED_ALARMED_PIN);
+			break;
+		case ACTIONS_OUTPUT_LED_KALM:
+			result = digitalRead(LED_KALM_PIN);
+			break;
+		default:
+			result = 0;
+			break;
+	}
+
 	return result;
 }
 
-uint8_t actions_checkEnable()
+void actions_setOutput(int output, int state)
 {
-	buttons_readButton(&enable);
-	uint8_t result = buttons_checkButton(&enable);
-	return result;
+	switch(output) {
+		case ACTIONS_OUTPUT_ALARM:
+			digitalWrite(MOSFET_BLINKY_THING, state);
+			break;
+		case ACTIONS_OUTPUT_LOUD:
+			digitalWrite(MOSFET_LOUD_THING, state);
+			break;
+		case ACTIONS_OUTPUT_LED_ALARMED:
+			digitalWrite(LED_ALARMED_PIN, state);
+			digitalWrite(LED_KALM_PIN, !state);
+			break;
+		case ACTIONS_OUTPUT_LED_KALM:
+			digitalWrite(LED_ALARMED_PIN, !state);
+			digitalWrite(LED_KALM_PIN, state);
+			break;
+		default:
+			break;
+	}
 }
 
-uint8_t actions_checkDisable()
-{
-	buttons_readButton(&disable);
-	uint8_t result = buttons_checkButton(&disable);
-	return result;
-}
-
-void actions_readAllButtons()
-{
-	buttons_readButton(&detector);
-	buttons_readButton(&disable);
-	buttons_readButton(&enable);
-}
-
-void actions_WeeWooWeeWoo()
-{
-	//Serial.println(F("[Debug] actions: enabling the alarm"));
-	digitalWrite(MOSFET_LOUD_THING, HIGH);
-	actions_blinkAlarm();
-}
-
-void actions_calmTFDown()
-{
-	//Serial.println(F("[Debug] actions: disabling the alarm"));
-	digitalWrite(MOSFET_LOUD_THING, LOW);
-	digitalWrite(MOSFET_BLINKY_THING, LOW);
+void actions_setSwitchPeriod(int output, unsigned int period) {
+	switch(output) {
+		case ACTIONS_OUTPUT_ALARM:
+			sched_setJobPeriod(&actions_jobBlinkAlarm, period);
+			sched_activateJob(&actions_jobBlinkAlarm);
+			break;
+		case ACTIONS_OUTPUT_LED_ALARMED:
+			sched_setJobPeriod(&actions_jobBlinkLed1, period);
+			sched_activateJob(&actions_jobBlinkLed1);
+			break;
+		case ACTIONS_OUTPUT_LED_KALM:
+			sched_setJobPeriod(&actions_jobBlinkLed2, period);
+			sched_activateJob(&actions_jobBlinkLed2);
+			break;
+		default:
+			break;
+	}
 }
 
 int actions_sniff()
@@ -85,8 +129,6 @@ int actions_sniff()
 	static bool fireTriggered = false;
 
 	int result = analogRead(FIRE_ALARM_PIN);
-//	Serial.print(F("[Debug] sniffing: "));
-//	Serial.println(result);
 	if (result <= 512 && !fireTriggered) {
 		fireTriggered = true;
 	}
@@ -120,32 +162,19 @@ int actions_sniff()
 
 void actions_bonk()
 {
-	actions_calmTFDown();
 	fsm_setState(FSM_STATE_KALM);
 }
 
-void actions_ledAlarmed() 
+void actions_readAllButtons()
 {
-	digitalWrite(LED_ALARMED_PIN, HIGH);
-	digitalWrite(LED_KALM_PIN, LOW);
+	buttons_readButton(&detector);
+	buttons_readButton(&disable);
+	buttons_readButton(&enable);
 }
 
-void actions_ledKalm() 
+void actions_blink(void* output) 
 {
-	digitalWrite(LED_ALARMED_PIN, LOW);
-	digitalWrite(LED_KALM_PIN, HIGH);
+	int out = (int)output;
+	actions_setOutput(out, !actions_checkInput(out));
 }
 
-void actions_setAlarmBlinkPeriod(unsigned int period) 
-{
-	act_blinkPeriod = period;
-}
-
-void actions_blinkAlarm() 
-{
-	if (millis() - act_blinkStart >= act_blinkPeriod) {
-		digitalWrite(MOSFET_BLINKY_THING, act_alarmLedState);
-		act_alarmLedState = !act_alarmLedState;
-		act_blinkStart = millis();
-	}
-}

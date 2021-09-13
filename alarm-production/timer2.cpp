@@ -46,7 +46,7 @@ ISR(TIMER2_COMPA_vect)
     sched_tick(tickSched);
 }*/
 
-/*void timer2_init(sSched_t* sched) 
+void timer2_init(sSched_t* sched) 
 {
     tickSched = sched;
 
@@ -75,4 +75,4 @@ void timer2_enable()
 ISR(TIMER4_COMPA_vect)
 {
     sched_tick(tickSched);
-}*/
+}

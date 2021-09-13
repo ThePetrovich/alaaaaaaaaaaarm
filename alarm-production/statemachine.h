@@ -15,4 +15,6 @@ void fsm_setState(int state);
 int fsm_getState();
 void fsm_runStateMachine();
 
+void fsm_init();
+
 #endif

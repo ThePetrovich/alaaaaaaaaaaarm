@@ -11,7 +11,7 @@
 
 #define LIBSCHED_VERSION "1.1.0"
 
-#define CFG_NUMBER_OF_PRIORITIES 8
+#define CFG_NUMBER_OF_PRIORITIES 8 /* highest is 7 */
 
 #include "lists.h"
 #include "jobs.h"
