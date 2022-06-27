@@ -4,6 +4,10 @@
 
 extern WIEGAND wg;
 
+uint32_t wg_authorized_keys[] = {0x69EE84}; //Debug key
+char wg_names[][16] = {"Debug"};
+const uint8_t wg_authorized_keys_num = 1;
+
 void wiegand_setup() 
 {
     wg.begin(WIEGAND_DATA1_PIN, WIEGAND_DATA2_PIN);
