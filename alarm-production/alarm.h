@@ -35,8 +35,6 @@
 
 #define FIRE_CHECKS_COUNT 10000
 
-DateTime now;
-
 void fsm_setState(int state);
 int fsm_getState();
 void fsm_runStateMachine();
